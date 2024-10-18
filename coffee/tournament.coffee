@@ -16,6 +16,7 @@ KEYWORDS.TPP = 'integer (Tables Per Page, default: 30)'
 KEYWORDS.PPP = 'integer (Players Per Page, default: 60)'
 # KEYWORDS.K = 'integer (default: 20)'
 KEYWORDS.FACTOR = 'float, 0 or larger than 1.2 (default: 2)'
+KEYWORDS.BONUS = 'integer (percent for black player)'
 
 export class Tournament 
 	constructor : ->
@@ -225,6 +226,7 @@ export class Tournament
 		print 'PPP',@ppp
 		print 'PAUSED',@paused
 		print 'FACTOR',g.FACTOR
+		print 'BONUS',g.BONUS
 		# print 'PLAYERS'
 		# for p in @persons
 		# 	print '  ', p.id, p.elo, p.name, p.opp, p.col, p.res
@@ -249,6 +251,7 @@ export class Tournament
 		hash.PAUSED = ""
 		#hash.K = 2
 		hash.FACTOR = 2 # default
+		hash.BONUS = 1 # %
 
 		for line,nr in data	
 			line = line.trim()
@@ -284,6 +287,7 @@ export class Tournament
 		@paused = hash.PAUSED # list of zero based ids
 		# g.K  = parseInt hash.K # 40, 20 or 10 normally
 		g.FACTOR = parseFloat hash.FACTOR
+		g.BONUS = parseInt hash.BONUS
 
 		players = hash.PLAYERS
 		g.N = players.length
@@ -377,6 +381,7 @@ export class Tournament
 		res.push "DATE=" + @datum
 		#res.push "K=" + g.K
 		res.push "FACTOR=" + g.FACTOR
+		res.push "BONUS=" + g.BONUS
 		res.push "TPP=" + @tpp
 		res.push "PPP=" + @ppp
 		res.push "PAUSED=" + @makePaused()
