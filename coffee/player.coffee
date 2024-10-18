@@ -25,9 +25,26 @@ export class Player
 		if @opp[r] == g.PAUSE then return 0
 		if r >= @res.length then return 0
 		b = g.tournament.playersByID[@opp[r]].elo + g.OFFSET
-		if @res[r] == '2' then return b   # WIN
-		if @res[r] == '1' then return b/2 # DRAW
+		color = @col[r]
+		if color == 'b' then faktor = 1 + 2 * g.BONUS/100 # t ex 1.02
+		if color == 'w' then faktor = 1 - 2 * g.BONUS/100 # t ex 0.98
+		if @res[r] == '2' then return faktor * b   # WIN
+		if @res[r] == '1' then return faktor * b/2 # DRAW 
 		0 # LOSS
+
+	explanation : (r) ->
+		if @opp[r] == g.BYE   then return ""
+		if @opp[r] == g.PAUSE then return ""
+		if r >= @res.length then return ""
+		if @res[r] == '0' then return "0"
+		b = g.tournament.playersByID[@opp[r]].elo + g.OFFSET 
+		color = @col[r]
+		if color == 'b' then faktor = 1 + 2 * g.BONUS/100 # t ex 1.02
+		if color == 'w' then faktor = 1 - 2 * g.BONUS/100 # t ex 0.98
+		if @res[r] == '2' then faktor /= 1   # WIN
+		if @res[r] == '1' then faktor /= 2   # DRAW  
+		result = faktor * b 
+		"#{result.toFixed(2)} = #{faktor} * (#{g.OFFSET} + #{g.tournament.playersByID[@opp[r]].elo})" 
 
 	# performance : (r) ->
 	# 	if @opp[r] == g.BYE   then return @elo + 400
@@ -40,7 +57,7 @@ export class Player
 
 	calcRound : (r) ->
 		# if g.FACTOR == 0 then @calcRound0 r else @calcRound1 r
-		@calcRound1 r
+		1 * @calcRound1 r
 
 	change : (rounds) ->
 		if rounds of @cache then return @cache[rounds]
@@ -56,11 +73,23 @@ export class Player
 		# 	result += parseInt @res[r]
 		# result
 
-	avgEloDiff : ->
+	avgEloDiffAbs : ->
 		res = []
 		for id in @opp.slice 0, @opp.length # - 1
 			if id >= 0 then res.push abs @elo - g.tournament.playersByID[id].elo
 		if res.length == 0 then 0 else g.sum(res) / res.length
+
+	avgEloDiffRel : ->
+		res = []
+		for id in @opp.slice 0, @opp.length # - 1
+			if id >= 0 then res.push g.tournament.playersByID[id].elo
+		if res.length == 0 then 0 else @elo - g.sum(res) / res.length
+
+	# avgEloDiffRel : ->
+	# 	res = []
+	# 	for id in @opp.slice 0, @opp.length # - 1
+	# 		if id >= 0 then res.push @elo - g.tournament.playersByID[id].elo
+	# 	if res.length == 0 then 0 else g.sum(res) / res.length
 
 	balans : -> # färgbalans
 		result = 0

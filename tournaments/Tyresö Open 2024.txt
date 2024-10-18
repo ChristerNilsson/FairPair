@@ -1,5 +1,5 @@
 TITLE=Tyresö Open 2024
-FACTOR=0
+FACTOR=2
 2416!Hampus Sörensen
 2413!Michael Wiedenkeller
 2366!Joar Ölund

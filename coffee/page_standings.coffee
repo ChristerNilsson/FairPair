@@ -103,7 +103,7 @@ export class Standings extends Page
 				#if pa.res[r] == '1' then s += " = 0.5 * #{g.txtT pb.elo, 7, RIGHT}"
 				#if pa.res[r] == '2' then s += " = #{g.txtT pb.elo, 7, RIGHT}"
 					
-				g.help = s
+				g.help = pa.explanation r
 		else
 			g.help = ""
 

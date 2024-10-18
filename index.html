@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>FairPair</title>
-		<link rel="icon" type="image/x-icon" href="favicon.ico">		
+		<link rel="icon" type="image/x-icon" href="favicon.ico">
 		<script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js" ></script>
 		<script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" ></script>
 		<style>html,body {margin: 0;padding: 0;overflow-x: hidden; overflow-y: auto;}</style>
@@ -17,6 +17,6 @@
 				console.log(file.name);
 				if (file) {file.text().then(text => {handleFile(file.name,text);}).catch(error => {console.error('Error reading file:', error);});}
 			}
-		</script>		
+		</script>
 	</body>
 </html>

@@ -33,6 +33,7 @@ export class Tournament
 		@robin = range g.N
 		@mat = []
 		@virgin = true
+		@meetings = []
 
 	write : ->
 	
@@ -163,13 +164,13 @@ export class Tournament
 		document.title = "Round #{@round+1}"
 
 		arr = @makeEdges @preMatch() # -1 om bye saknas
-		start = new Date()		
-		n = 1000
+		start = new Date()
+		n = 1000000 # 1000 celler
 
 		for end in range n, arr.length+n, n
 			edges = arr.slice 0,end
 
-			start = new Date()		
+			start = new Date()
 			print 'edges',edges
 			solution = @findSolution edges
 			print 'cpu',end, (new Date() - start)
@@ -193,6 +194,10 @@ export class Tournament
 			belo = @playersByID[b[0]].elo + @playersByID[b[1]].elo
 			belo - aelo
 
+		for a,b in @pairs
+			@meetings.push "#{@playersByID[a[0]].elo} #{@playersByID[a[1]].elo}"
+			@meetings.push "#{@playersByID[a[1]].elo} #{@playersByID[a[0]].elo}"
+
 		if @round == 0 then print 'pairs', @pairs
 		if @round > 0  then print 'pairs', ([a, b, @playersByID[a].elo, @playersByID[b].elo, Math.abs(@playersByID[a].elo - @playersByID[b].elo).toFixed(1)] for [a,b] in @pairs)
 		print 'solutionCosts', @solutionCosts @pairs
@@ -203,7 +208,7 @@ export class Tournament
 		g.pages[g.TABLES].setLista()
 		g.pages[g.STANDINGS].setLista()
 
-		# @downloadFile @makeBubbles(), "-#{@round} Bubbles.txt"
+		@downloadFile @meetings.join("\n"), "meetings-R#{@round}.txt"
 		@downloadFile @makeStandardFile(), "#{@filename}-R#{@round}.prn"
 
 		@round += 1
@@ -423,7 +428,7 @@ export class Tournament
 		for i in range canvas.length
 			row = canvas[i]
 			nr = str(i + 1).padStart(3)
-			output.push "#{nr}  #{(str(item) for item in row).join(" ")}  #{ordning[i]} #{@playersByELO[i].avgEloDiff().toFixed(1).padStart(6)}"
+			output.push "#{nr}  #{(str(item) for item in row).join(" ")}  #{ordning[i]} #{@playersByELO[i].avgEloDiffAbs().toFixed(1).padStart(6)} #{@playersByELO[i].avgEloDiffRel().toFixed(1).padStart(6)}"
 		output.push '     ' + header
 		output.join '\n'
 
