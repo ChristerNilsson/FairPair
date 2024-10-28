@@ -43,6 +43,7 @@ DATE=2024-05-28
 window.windowResized = -> 
 	resizeCanvas windowWidth, windowHeight - 4
 	g.LPP = Math.trunc height / g.ZOOM[g.state] - 4.5
+	xdraw()
 
 window.setup = ->
 	createCanvas windowWidth-4,windowHeight-4
@@ -68,17 +69,27 @@ window.setup = ->
 
 	window.windowResized()
 
-window.draw = -> 
+xdraw = -> 
 	background 'gray'
 	textSize g.ZOOM[g.state]
 	g.pages[g.state].draw()
 
-window.mouseMoved = (event) -> g.pages[g.state].mouseMoved event
-window.mousePressed = (event) -> g.pages[g.state].mousePressed event
-window.mouseWheel   = (event) -> g.pages[g.state].mouseWheel event
+window.mouseMoved = (event) -> 
+	g.pages[g.state].mouseMoved event
+	xdraw()
+
+window.mousePressed = (event) -> 
+	g.pages[g.state].mousePressed event
+	xdraw()
+
+window.mouseWheel = (event) -> 
+	g.pages[g.state].mouseWheel event
+	xdraw()
+
 window.keyPressed   = (event) -> 
 	key2 = key
 	if key2 in ['Control','Shift','I'] then return
 	if key2 == '1' then key2 = 'K1'
 	if key2 == '0' then key2 = 'K0'
 	g.pages[g.state].keyPressed event,key2
+	xdraw()

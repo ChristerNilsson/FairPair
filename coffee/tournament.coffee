@@ -14,7 +14,6 @@ KEYWORDS.ROUND = 'integer'
 KEYWORDS.PAUSED = '!-separated integers'
 KEYWORDS.TPP = 'integer (Tables Per Page, default: 30)'
 KEYWORDS.PPP = 'integer (Players Per Page, default: 60)'
-# KEYWORDS.K = 'integer (default: 20)'
 
 export class Tournament 
 	constructor : ->
@@ -223,10 +222,6 @@ export class Tournament
 		print 'TPP',@tpp
 		print 'PPP',@ppp
 		print 'PAUSED',@paused
-		# print 'PLAYERS'
-		# for p in @persons
-		# 	print '  ', p.id, p.elo, p.name, p.opp, p.col, p.res
-
 		print '################'
 
 	fetchData : (filename, data) ->
@@ -245,7 +240,6 @@ export class Tournament
 		hash.TPP = 30
 		hash.PPP = 60
 		hash.PAUSED = ""
-		#hash.K = 2
 
 		for line,nr in data	
 			line = line.trim()
@@ -279,7 +273,6 @@ export class Tournament
 		@tpp = parseInt hash.TPP # Tables Per Page
 		@ppp = parseInt hash.PPP # Players Per Page
 		@paused = hash.PAUSED # list of zero based ids
-		# g.K  = parseInt hash.K # 40, 20 or 10 normally
 
 		players = hash.PLAYERS
 		g.N = players.length
@@ -310,19 +303,7 @@ export class Tournament
 			if a.elo != b.elo then return b.elo - a.elo
 			if a.name > b.name then 1 else -1
 
-		# if g.FACTOR == 0  
-		# 	g.OFFSET = 0
-		# 	print 'g.OFFSET',g.OFFSET
-		# else
-		# 	if g.FACTOR < 1.2 then g.FACTOR = 1.2
-		# 	XMAX = @playersByELO[0].elo
-		# 	XMIN = _.last(@playersByELO).elo
-		# 	g.OFFSET = (XMAX - XMIN) / (g.FACTOR - 1) - XMIN
-		# 	g.OFFSET = Math.round g.OFFSET
-		# 	print 'XMIN,XMAX,g.OFFSET',XMIN,XMAX,g.OFFSET
-
 		print 'playersByELO', @playersByELO
-
 		print 'playersByID', @playersByID 
 
 		@playersByName = _.sortBy @playersByID, (player) -> player.name
@@ -371,7 +352,6 @@ export class Tournament
 		res.push "ROUND=" + @round
 		res.push "TITLE=" + @title
 		res.push "DATE=" + @datum
-		#res.push "K=" + g.K
 		res.push "TPP=" + @tpp
 		res.push "PPP=" + @ppp
 		res.push "PAUSED=" + @makePaused()
@@ -416,7 +396,7 @@ export class Tournament
 	dumpCanvas : (title,average,canvas,n) ->
 		output = []
 		if title != "" then output.push title
-		output.push "Sparseness: #{average}  (Average Elo Difference)  FACTOR:#{g.FACTOR}" # EXPONENT:#{g.EXPONENT} COLORS:#{g.COLORS}"
+		output.push "Sparseness: #{average}  (Average Elo Difference)"
 		header = (str((i + 1) % 10) for i in range n).join(' ')
 		output.push '     ' + header + '   Elo    AED'
 		ordning = (p.elo for p in @playersByELO)

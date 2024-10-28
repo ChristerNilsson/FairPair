@@ -23,10 +23,11 @@ export class Standings extends Page
 		header += ' ' + g.txtT "Name",        25, LEFT
 		header += ''  + g.txtT rheader, 3*@round, LEFT 
 		header += ' ' + g.txtT "Perf.rat",      8, RIGHT
-		# header += ' ' + g.txtT "Score",        5, RIGHT
 
 		@playersByPerformance = _.clone @t.playersByID.slice 0,g.N
-		@playersByPerformance = _.sortBy @playersByPerformance, (p) => -(p.change(@t.round+1))
+		@playersByPerformance = @playersByPerformance.sort (a,b) => 
+			if b.change(@t.round+1) == a.change(@t.round+1) then b.elo - a.elo
+			else b.change(@t.round+1) - a.change(@t.round+1)
 
 		@lista = new Lista @playersByPerformance, header, @buttons, (p,index,pos) => # returnera strängen som ska skrivas ut. Dessutom ritas lightbulbs här.
 			@y_bulb = (5 + index) * g.ZOOM[g.state] 
@@ -38,10 +39,11 @@ export class Standings extends Page
 			s += ' ' + g.txtT p.elo.toString(),       4,  RIGHT
 			s += ' ' + g.txtT p.name,                25,  LEFT
 			s += ' ' + g.txtT '',      3 * (@t.round-1),  CENTER
-			# if g.FACTOR == 0 then s += ' ' + g.txtT p.change(@t.round).toFixed(3), 7, RIGHT
-			s += ' ' + g.txtT p.change(@t.round).toFixed(1), 7, RIGHT
-			# s += ' ' + g.txtT p.score(@t.round).toString(),   5,  RIGHT
-
+			value = p.change(@t.round)
+			if value < 1 then s += ' ' + g.txtT "-inf", 7, RIGHT
+			else if value > 3999 then s += ' ' + g.txtT "inf", 7, RIGHT
+			else s += ' ' + g.txtT p.change(@t.round).toFixed(1), 7, RIGHT
+			
 			for r in range g.tournament.round - 1 #- 1
 				x = g.ZOOM[g.state] * (24.2 + 1.8*r)
 				@lightbulb p.id, p.col[r], x, @y_bulb, p.res.slice(r,r+1), p.opp[r]
@@ -84,7 +86,7 @@ export class Standings extends Page
 
 			if b >= 0				
 				pb = @t.playersByID[b]
-				chg = pa.calcRound r
+				chg = 1234 #pa.calcRound r
 
 				s = ""
 				s +=       g.txtT '',                      3,  RIGHT
@@ -92,16 +94,9 @@ export class Standings extends Page
 				s += ' ' + g.txtT pb.elo.toString(),       4,  RIGHT
 				s += ' ' + g.txtT pb.name,                25,  LEFT
 				s += ' ' + g.txtT '',       3 * (@t.round-1),  LEFT
-				# if g.FACTOR == 0
-				# 	diff = pa.elo - pb.elo
-				# 	s += ' ' + g.txtT chg.toFixed(3), 7,  RIGHT
-				# 	s += " = #{g.K}*(#{pa.res[r]/2}-p(#{diff})) p(#{diff})=#{g.F(diff).toFixed(3)}"
-				# else
 				s += ' ' + g.txtT chg.toFixed(1), 7,  RIGHT
 				if pa.res[r] == '1' then s += " = 0.5 * (#{g.txtT pb.elo, 7, RIGHT})"
 				if pa.res[r] == '2' then s += " = #{g.txtT pb.elo, 7, RIGHT}"
-				#if pa.res[r] == '1' then s += " = 0.5 * #{g.txtT pb.elo, 7, RIGHT}"
-				#if pa.res[r] == '2' then s += " = #{g.txtT pb.elo, 7, RIGHT}"
 					
 				g.help = pa.explanation r
 		else
@@ -166,7 +161,13 @@ export class Standings extends Page
 				if player.opp[r] >= 0
 					s += g.txtT "#{1+player.opp[r]}#{g.RINGS[player.col[r][0]]}#{"0½1"[player.res[r]]}", 6,  RIGHT
 
-			s += ' ' + g.txtT player.change(@t.round+1).toFixed(1),  7,  RIGHT
+			p = player
+			value = p.change(@t.round)
+			if value < 1 then s += ' ' + g.txtT "-inf", 7, RIGHT
+			else if value > 3999 then s += ' ' + g.txtT "inf", 7, RIGHT
+			else s += ' ' + g.txtT p.change(@t.round+1).toFixed(1), 7, RIGHT
+
+			# s += ' ' + g.txtT player.change(@t.round+1).toFixed(1),  7,  RIGHT
 			# s += ' ' + g.txtT player.perChg(@t.round+1).toFixed(1),  7,  RIGHT
 			res.push s 
 			if i % @t.ppp == @t.ppp-1 then res.push "\f"
