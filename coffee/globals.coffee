@@ -10,7 +10,6 @@ export g = {}
 
 g.EXPONENT = 1.01 # 1 or 1.01 (or 2)
 g.COLORS = 1 # 2 ej tillåtet, då kan www eller bbb uppstå.
-g.BONUS = 1 # % fördel för svart vid remi. Dubbelt vid vinst. Motsvarande negativt för vit.
 
 ###########################################
 

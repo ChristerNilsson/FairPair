@@ -2,7 +2,7 @@ import { g,print,range,scalex,scaley,SEPARATOR } from './globals.js'
 
 export class Player
 	constructor : (@id, @name="", @elo="1400", @opp=[], @col="", @res="", @active = true) -> 
-		@cache = {}
+		# @cache = {}
 		@pos = [] # one for each round
 
 	toggle : -> 
@@ -21,32 +21,36 @@ export class Player
 	# 	g.K * (@res[r]/2 - g.F diff)
 
 	calcRound1 : (r) -> 
-		if @opp[r] == g.BYE   then return @elo + g.OFFSET
+		if @opp[r] == g.BYE   then return @elo
 		if @opp[r] == g.PAUSE then return 0
 		if r >= @res.length then return 0
-		b = g.tournament.playersByID[@opp[r]].elo + g.OFFSET
+		b = g.tournament.playersByID[@opp[r]].elo
 		color = @col[r]
-		if color == 'b' then faktor = 1 + 2 * g.BONUS/100 # t ex 1.02
-		if color == 'w' then faktor = 1 - 2 * g.BONUS/100 # t ex 0.98
-		if @res[r] == '2' then return faktor * b   # WIN
-		if @res[r] == '1' then return faktor * b/2 # DRAW 
+		# if color == 'b' then faktor = 1 + 2 * g.BONUS/100 # t ex 1.02
+		# if color == 'w' then faktor = 1 - 2 * g.BONUS/100 # t ex 0.98
+		if @res[r] == '2' then return b   # WIN
+		if @res[r] == '1' then return b/2 # DRAW 
 		0 # LOSS
 
 	explanation : (r) ->
 		if @opp[r] == g.BYE   then return ""
 		if @opp[r] == g.PAUSE then return ""
-		if r >= @res.length then return ""
-		if @res[r] == '0' then return "0"
-		b = g.tournament.playersByID[@opp[r]].elo + g.OFFSET 
-		color = @col[r]
-		if color == 'b' then faktor = 1 + 2 * g.BONUS/100 # t ex 1.02
-		if color == 'w' then faktor = 1 - 2 * g.BONUS/100 # t ex 0.98
-		if @res[r] == '2' then faktor /= 1   # WIN
-		if @res[r] == '1' then faktor /= 2   # DRAW  
-		result = faktor * b 
-		"#{result.toFixed(2)} = #{faktor} * (#{g.OFFSET} + #{g.tournament.playersByID[@opp[r]].elo})" 
+		res = ['Loss','Draw','Win'][@res[r]]
+		opp = g.tournament.playersByID[@opp[r]]
+		col = if @col[r]=='w' then 'white' else 'black'
+		"#{res} against #{opp.elo} #{opp.name} as #{col}"
+		# if r >= @res.length then return ""
+		# if @res[r] == '0' then return "0"
+		# b = g.tournament.playersByID[@opp[r]].elo
+		# color = @col[r]
+		# # if color == 'b' then faktor = 1 + 2 * g.BONUS/100 # t ex 1.02
+		# # if color == 'w' then faktor = 1 - 2 * g.BONUS/100 # t ex 0.98
+		# if @res[r] == '2' then faktor = 1.0 # WIN
+		# if @res[r] == '1' then faktor = 0.5 # DRAW
+		# result = faktor * b 
+		# "#{result.toFixed(2)} = #{faktor} * #{g.tournament.playersByID[@opp[r]].elo}" 
 
-	# performance : (r) ->
+	# linear_performance : (r) ->
 	# 	if @opp[r] == g.BYE   then return @elo + 400
 	# 	if @opp[r] == g.PAUSE then return 0
 	# 	if r >= @res.length then return 0
@@ -55,16 +59,42 @@ export class Player
 	# 	if @res[r] == '1' then return b        # DRAW
 	# 	if @res[r] == '0' then return b - 400  # LOSS
 
+	expected_score : (ratings, own_rating) ->
+		g.sum(1 / (1 + 10**((rating - own_rating) / 400)) for rating in ratings)   
+
+	performance_rating : (ratings, score) ->
+		lo = 0
+		hi = 4000
+		while hi - lo > 0.001
+			rating = (lo + hi) / 2
+			if score > @expected_score ratings, rating
+				lo = rating
+			else
+				hi = rating
+		rating
+
+	performance : ->
+		score = 0
+		ratings = []
+		for r in range @res.length
+			if @opp[r] == g.BYE then continue
+			if @opp[r] == g.PAUSE then continue
+			score += @res[r]/2
+			ratings.push g.tournament.playersByID[@opp[r]].elo
+		@performance_rating(ratings,score)
+
 	calcRound : (r) ->
 		# if g.FACTOR == 0 then @calcRound0 r else @calcRound1 r
 		1 * @calcRound1 r
 
 	change : (rounds) ->
-		if rounds of @cache then return @cache[rounds]
-		@cache[rounds] = g.sum (@calcRound r for r in range rounds)
+		# if rounds of @cache then return @cache[rounds]
+		# @cache[rounds] = g.sum (@calcRound r for r in range rounds)
+		# g.sum (@calcRound r for r in range rounds)
 
 	# perChg : (rounds) -> # https://en.wikipedia.org/wiki/Performance_rating_(chess)
-	# 	g.sum(@performance r for r in range rounds)/(rounds-1)
+		#g.sum(@performance r for r in range rounds)/(rounds-1)
+		@performance() # r for r in range rounds)/(rounds-1)
 
 	score : (rounds) -> g.sum (parseInt @res[r] for r in range rounds-1)
 		# result = 0

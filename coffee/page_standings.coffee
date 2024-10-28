@@ -22,7 +22,7 @@ export class Standings extends Page
 		header += ' ' + g.txtT "Elo",          4, RIGHT
 		header += ' ' + g.txtT "Name",        25, LEFT
 		header += ''  + g.txtT rheader, 3*@round, LEFT 
-		header += ' ' + g.txtT "Quality",      8, RIGHT
+		header += ' ' + g.txtT "Perf.rat",      8, RIGHT
 		# header += ' ' + g.txtT "Score",        5, RIGHT
 
 		@playersByPerformance = _.clone @t.playersByID.slice 0,g.N
@@ -98,8 +98,8 @@ export class Standings extends Page
 				# 	s += " = #{g.K}*(#{pa.res[r]/2}-p(#{diff})) p(#{diff})=#{g.F(diff).toFixed(3)}"
 				# else
 				s += ' ' + g.txtT chg.toFixed(1), 7,  RIGHT
-				if pa.res[r] == '1' then s += " = 0.5 * (#{g.OFFSET} + #{g.txtT pb.elo, 7, RIGHT})"
-				if pa.res[r] == '2' then s += " = #{g.OFFSET} + #{g.txtT pb.elo, 7, RIGHT}"
+				if pa.res[r] == '1' then s += " = 0.5 * (#{g.txtT pb.elo, 7, RIGHT})"
+				if pa.res[r] == '2' then s += " = #{g.txtT pb.elo, 7, RIGHT}"
 				#if pa.res[r] == '1' then s += " = 0.5 * #{g.txtT pb.elo, 7, RIGHT}"
 				#if pa.res[r] == '2' then s += " = #{g.txtT pb.elo, 7, RIGHT}"
 					
@@ -150,7 +150,7 @@ export class Standings extends Page
 		header += ' ' + g.txtT "Name", 25,  LEFT
 		for r in range @t.round
 			header += g.txtT "#{r+1}",  6, RIGHT
-		header += ' ' + g.txtT "Quality", 8, RIGHT
+		header += ' ' + g.txtT "Perf.rat", 8, RIGHT
 		
 		for player,i in @playersByPerformance
 			if i % @t.ppp == 0 then res.push header
@@ -164,7 +164,7 @@ export class Standings extends Page
 				if player.opp[r] == -2 then s += '    P '
 				if player.opp[r] == -1 then s += '   BYE'
 				if player.opp[r] >= 0
-					s += g.txtT "#{1+player.opp[r]}#{g.RINGS[player.col[r][0]]}#{"0½1"[player.res[r]]}", 6,  RIGHT			
+					s += g.txtT "#{1+player.opp[r]}#{g.RINGS[player.col[r][0]]}#{"0½1"[player.res[r]]}", 6,  RIGHT
 
 			s += ' ' + g.txtT player.change(@t.round+1).toFixed(1),  7,  RIGHT
 			# s += ' ' + g.txtT player.perChg(@t.round+1).toFixed(1),  7,  RIGHT

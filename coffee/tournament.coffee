@@ -15,8 +15,6 @@ KEYWORDS.PAUSED = '!-separated integers'
 KEYWORDS.TPP = 'integer (Tables Per Page, default: 30)'
 KEYWORDS.PPP = 'integer (Players Per Page, default: 60)'
 # KEYWORDS.K = 'integer (default: 20)'
-KEYWORDS.FACTOR = 'float, 0 or larger than 1.2 (default: 2)'
-KEYWORDS.BONUS = 'integer (percent for black player)'
 
 export class Tournament 
 	constructor : ->
@@ -225,8 +223,6 @@ export class Tournament
 		print 'TPP',@tpp
 		print 'PPP',@ppp
 		print 'PAUSED',@paused
-		print 'FACTOR',g.FACTOR
-		print 'BONUS',g.BONUS
 		# print 'PLAYERS'
 		# for p in @persons
 		# 	print '  ', p.id, p.elo, p.name, p.opp, p.col, p.res
@@ -250,8 +246,6 @@ export class Tournament
 		hash.PPP = 60
 		hash.PAUSED = ""
 		#hash.K = 2
-		hash.FACTOR = 2 # default
-		hash.BONUS = 1 # %
 
 		for line,nr in data	
 			line = line.trim()
@@ -286,8 +280,6 @@ export class Tournament
 		@ppp = parseInt hash.PPP # Players Per Page
 		@paused = hash.PAUSED # list of zero based ids
 		# g.K  = parseInt hash.K # 40, 20 or 10 normally
-		g.FACTOR = parseFloat hash.FACTOR
-		g.BONUS = parseInt hash.BONUS
 
 		players = hash.PLAYERS
 		g.N = players.length
@@ -318,16 +310,16 @@ export class Tournament
 			if a.elo != b.elo then return b.elo - a.elo
 			if a.name > b.name then 1 else -1
 
-		if g.FACTOR == 0  
-			g.OFFSET = 0
-			print 'g.OFFSET',g.OFFSET
-		else
-			if g.FACTOR < 1.2 then g.FACTOR = 1.2
-			XMAX = @playersByELO[0].elo
-			XMIN = _.last(@playersByELO).elo
-			g.OFFSET = (XMAX - XMIN) / (g.FACTOR - 1) - XMIN
-			g.OFFSET = Math.round g.OFFSET
-			print 'XMIN,XMAX,g.OFFSET',XMIN,XMAX,g.OFFSET
+		# if g.FACTOR == 0  
+		# 	g.OFFSET = 0
+		# 	print 'g.OFFSET',g.OFFSET
+		# else
+		# 	if g.FACTOR < 1.2 then g.FACTOR = 1.2
+		# 	XMAX = @playersByELO[0].elo
+		# 	XMIN = _.last(@playersByELO).elo
+		# 	g.OFFSET = (XMAX - XMIN) / (g.FACTOR - 1) - XMIN
+		# 	g.OFFSET = Math.round g.OFFSET
+		# 	print 'XMIN,XMAX,g.OFFSET',XMIN,XMAX,g.OFFSET
 
 		print 'playersByELO', @playersByELO
 
@@ -380,8 +372,6 @@ export class Tournament
 		res.push "TITLE=" + @title
 		res.push "DATE=" + @datum
 		#res.push "K=" + g.K
-		res.push "FACTOR=" + g.FACTOR
-		res.push "BONUS=" + g.BONUS
 		res.push "TPP=" + @tpp
 		res.push "PPP=" + @ppp
 		res.push "PAUSED=" + @makePaused()
