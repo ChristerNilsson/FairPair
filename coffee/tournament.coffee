@@ -295,13 +295,16 @@ export class Tournament
 				if id != "" then @playersByID[id].active = false
 
 		for i in range g.N
-			@playersByID[i].id = i
 			@playersByID[i].elo = parseInt @playersByID[i].elo
-		
-		@playersByELO = _.clone @playersByID
-		@playersByELO.sort (a,b) ->  
+
+		@playersByID.sort (a,b) ->  
 			if a.elo != b.elo then return b.elo - a.elo
 			if a.name > b.name then 1 else -1
+
+		for i in range g.N
+			@playersByID[i].id = i
+		
+		@playersByELO = _.clone @playersByID
 
 		print 'playersByELO', @playersByELO
 		print 'playersByID', @playersByID 

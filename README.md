@@ -59,3 +59,9 @@ The Swiss Matrix is quite spread out, which indicates many games with large elo 
 78 active players can pair up to 46 rounds (59%).   
 
 If you need more rounds, consider a round robin Berger instead.
+
+## Questions & Answers
+
+Q1. Sidorna i .prn separeras ej.
+A1. Installera TextPad. Finns inget sätt att få Notepad att hantera FormFeed.
+

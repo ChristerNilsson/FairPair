@@ -141,7 +141,7 @@ export class Standings extends Page
 		header = ""
 		header +=       g.txtT "Pos",   3,  RIGHT
 		header += ' ' + g.txtT 'Id',    3,  RIGHT
-		header += ' ' + g.txtT "Elo0",  4,  RIGHT
+		header += ' ' + g.txtT "Elo",   4,  RIGHT
 		header += ' ' + g.txtT "Name", 25,  LEFT
 		for r in range @t.round
 			header += g.txtT "#{r+1}",  6, RIGHT
@@ -152,7 +152,7 @@ export class Standings extends Page
 			s = ""
 			s +=       g.txtT (1+i).toString(),          3,  RIGHT
 			s += ' ' + g.txtT (1+player.id).toString(),  3,  RIGHT
-			s += ' ' + g.txtT player.elo.toString(),    4,  RIGHT
+			s += ' ' + g.txtT player.elo.toString(),     4,  RIGHT
 			s += ' ' + g.txtT player.name,              25,  LEFT
 			s += ' '
 			for r in range @t.round
