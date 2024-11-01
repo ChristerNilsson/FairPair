@@ -44,17 +44,17 @@ export class Player
 	change : (rounds) -> @performance()
 	score : (rounds) -> g.sum (parseInt @res[r] for r in range rounds-1)
 
-	avgEloDiffAbs : ->
-		res = []
-		for id in @opp.slice 0, @opp.length # - 1
-			if id >= 0 then res.push abs @elo - g.tournament.playersByID[id].elo
-		if res.length == 0 then 0 else g.sum(res) / res.length
+	# avgEloDiffAbs : ->
+	# 	res = []
+	# 	for id in @opp.slice 0, @opp.length # - 1
+	# 		if id >= 0 then res.push abs @elo - g.tournament.playersByID[id].elo
+	# 	if res.length == 0 then 0 else g.sum(res) / res.length
 
-	avgEloDiffRel : ->
-		res = []
-		for id in @opp.slice 0, @opp.length # - 1
-			if id >= 0 then res.push g.tournament.playersByID[id].elo
-		if res.length == 0 then 0 else @elo - g.sum(res) / res.length
+	# avgEloDiffRel : ->
+	# 	res = []
+	# 	for id in @opp.slice 0, @opp.length # - 1
+	# 		if id >= 0 then res.push g.tournament.playersByID[id].elo
+	# 	if res.length == 0 then 0 else @elo - g.sum(res) / res.length
 
 	balans : -> # färgbalans
 		result = 0

@@ -399,14 +399,14 @@ export class Tournament
 	dumpCanvas : (title,average,canvas,n) ->
 		output = []
 		if title != "" then output.push title
-		output.push "Sparseness: #{average}  (Average Elo Difference)"
+		# output.push "Sparseness: #{average}  (Average Elo Difference)"
 		header = (str((i + 1) % 10) for i in range n).join(' ')
-		output.push '     ' + header + '   Elo    AED'
+		output.push '     ' + header # + '   Elo    AED'
 		ordning = (p.elo for p in @playersByELO)
 		for i in range canvas.length
 			row = canvas[i]
 			nr = str(i + 1).padStart(3)
-			output.push "#{nr}  #{(str(item) for item in row).join(" ")}  #{ordning[i]} #{@playersByELO[i].avgEloDiffAbs().toFixed(1).padStart(6)} #{@playersByELO[i].avgEloDiffRel().toFixed(1).padStart(6)}"
+			output.push "#{nr}  #{(str(item) for item in row).join(" ")}  #{ordning[i]}" # #{@playersByELO[i].avgEloDiffAbs().toFixed(1).padStart(6)} #{@playersByELO[i].avgEloDiffRel().toFixed(1).padStart(6)}"
 		output.push '     ' + header
 		output.join '\n'
 
