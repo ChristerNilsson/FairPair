@@ -44,6 +44,12 @@ export class Player
 	change : (rounds) -> @performance()
 	score : (rounds) -> g.sum (parseInt @res[r] for r in range rounds-1)
 
+	eloDiffAbs : ->
+		res = []
+		for id in @opp.slice 0, @opp.length # - 1
+			if id >= 0 then res.push abs @elo - g.tournament.playersByID[id].elo
+		g.sum res
+
 	# avgEloDiffAbs : ->
 	# 	res = []
 	# 	for id in @opp.slice 0, @opp.length # - 1

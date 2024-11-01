@@ -401,13 +401,16 @@ export class Tournament
 		if title != "" then output.push title
 		# output.push "Sparseness: #{average}  (Average Elo Difference)"
 		header = (str((i + 1) % 10) for i in range n).join(' ')
-		output.push '     ' + header # + '   Elo    AED'
+		output.push '     ' + header
 		ordning = (p.elo for p in @playersByELO)
+		total = 0
 		for i in range canvas.length
 			row = canvas[i]
 			nr = str(i + 1).padStart(3)
-			output.push "#{nr}  #{(str(item) for item in row).join(" ")}  #{ordning[i]}" # #{@playersByELO[i].avgEloDiffAbs().toFixed(1).padStart(6)} #{@playersByELO[i].avgEloDiffRel().toFixed(1).padStart(6)}"
-		output.push '     ' + header
+			subTotal = @playersByELO[i].eloDiffAbs() #.toFixed(0)
+			total += subTotal
+			output.push "#{nr}  #{(str(item) for item in row).join(" ")}  #{ordning[i]} #{subTotal.toFixed(0).padStart(6)}" #{@playersByELO[i].avgEloDiffRel().toFixed(1).padStart(6)}"
+		output.push '     ' + header + ' ' + total.toFixed(0).padStart(12)
 		output.join '\n'
 
 	drawMatrix : (title,rounds,n) ->
