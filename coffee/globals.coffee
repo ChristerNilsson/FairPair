@@ -9,7 +9,7 @@ export g = {}
 ###########################################
 
 g.EXPONENT = 1.01 # 1 or 1.01 (or 2)
-g.COLORS = 1 # 2 ej tillåtet, då kan www eller bbb uppstå.
+g.COLORS = 2 # 2 ej tillåtet, då kan www eller bbb uppstå.
 
 ###########################################
 
@@ -42,7 +42,11 @@ g.F = (diff) -> 1 / (1 + pow 10, -diff/400)
 g.showType = (a) -> if typeof a == 'string' then "'#{a}'" else a
 export assert = (a,b) -> if not _.isEqual a,b then print "Assert failure: #{JSON.stringify a} != #{JSON.stringify b}"
 
-g.ok = (a,b) -> a.id != b.id and a.id not in b.opp and abs(a.balans() + b.balans()) <= g.COLORS
+g.ok = (a,b) -> 
+	# if g.tournament.round < 7
+	a.id != b.id and a.id not in b.opp and abs(a.balans() + b.balans()) <= 2
+	# else
+	# 	a.id != b.id and a.id not in b.opp and abs(a.balans() + b.balans()) <= 2 #1
 
 # g.ok = (a,b) -> 
 # 	mand = a.mandatory() + b.mandatory()

@@ -42,8 +42,9 @@ export class Standings extends Page
 			value = p.change(@t.round)
 			if value < 1 then s += ' ' + g.txtT "-inf", 7, RIGHT
 			else if value > 3999 then s += ' ' + g.txtT "inf", 7, RIGHT
-			else s += ' ' + g.txtT p.change(@t.round).toFixed(1+2), 8, RIGHT
-			
+			else s += ' ' + g.txtT p.change(@t.round).toFixed(1), 8, RIGHT
+			#s += ' ' + g.txtT p.balans(),3,RIGHT
+
 			for r in range g.tournament.round - 1 #- 1
 				x = g.ZOOM[g.state] * (24.2 + 1.8*r)
 				@lightbulb p.id, p.col[r], x, @y_bulb, p.res.slice(r,r+1), p.opp[r]
@@ -165,8 +166,8 @@ export class Standings extends Page
 			value = p.change(@t.round)
 			if value < 1 then s += ' ' + g.txtT "-inf", 7, RIGHT
 			else if value > 3999 then s += ' ' + g.txtT "inf", 7, RIGHT
-			else s += ' ' + g.txtT p.change(@t.round+1).toFixed(1+2), 8, RIGHT
-
+			else s += ' ' + g.txtT p.change(@t.round+1).toFixed(1), 8, RIGHT
+			# s += ' ' + g.txtT p.balans(),3,RIGHT
 			# s += ' ' + g.txtT player.change(@t.round+1).toFixed(1),  7,  RIGHT
 			# s += ' ' + g.txtT player.perChg(@t.round+1).toFixed(1),  7,  RIGHT
 			res.push s 

@@ -68,3 +68,5 @@ A1. Installera TextPad eller annan editor. Finns inget sätt att få Notepad att
 Q2. Vad menas med EPR?
 A2. EPR betyder Enhanced Performance Rating och innebär att alla spelare får en remi mot medelspelaren vid beräkning av PR. Detta får till följd att ingen spelare hamnar på inf eller -inf.
 
+Q3. Varför har man inte exakt 50% vita ronder?
+A3. Störst obalans kan inträffa vid jämnt antal ronder, t ex 3+5, för en del spelare. Problemet minskar om man använder udda antal ronder.
