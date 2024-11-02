@@ -41,7 +41,18 @@ export class Player
 			ratings.push g.tournament.playersByID[@opp[r]].elo
 		@performance_rating(ratings,score)
 
-	change : (rounds) -> @performance()
+	enhanced_performance : ->
+		score = 0.5
+		ratings = [g.average]
+		for r in range @res.length
+			if @opp[r] == g.BYE then continue
+			if @opp[r] == g.PAUSE then continue
+			score += @res[r]/2
+			ratings.push g.tournament.playersByID[@opp[r]].elo
+		# print 'EPR',ratings,score,@performance_rating(ratings,score)
+		@performance_rating(ratings,score)
+
+	change : (rounds) -> @enhanced_performance()
 	score : (rounds) -> g.sum (parseInt @res[r] for r in range rounds-1)
 
 	eloDiffAbs : ->

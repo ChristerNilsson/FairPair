@@ -294,8 +294,12 @@ export class Tournament
 			for id in @paused
 				if id != "" then @playersByID[id].active = false
 
+		g.average = 0
 		for i in range g.N
 			@playersByID[i].elo = parseInt @playersByID[i].elo
+			g.average += @playersByID[i].elo
+		g.average /= g.N
+		console.log 'average',g.average
 
 		@playersByID.sort (a,b) ->  
 			if a.elo != b.elo then return b.elo - a.elo

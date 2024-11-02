@@ -63,5 +63,8 @@ If you need more rounds, consider a round robin Berger instead.
 ## Questions & Answers
 
 Q1. Sidorna i .prn separeras ej.
-A1. Installera TextPad. Finns inget sätt att få Notepad att hantera FormFeed.
+A1. Installera TextPad eller annan editor. Finns inget sätt att få Notepad att hantera FormFeed.
+
+Q2. Vad menas med EPR?
+A2. EPR betyder Enhanced Performance Rating och innebär att alla spelare får en remi mot medelspelaren vid beräkning av PR. Detta får till följd att ingen spelare hamnar på inf eller -inf.
 

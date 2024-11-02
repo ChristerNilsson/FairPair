@@ -22,7 +22,7 @@ export class Standings extends Page
 		header += ' ' + g.txtT "Elo",          4, RIGHT
 		header += ' ' + g.txtT "Name",        25, LEFT
 		header += ''  + g.txtT rheader, 3*@round, LEFT 
-		header += ' ' + g.txtT "PR",      8, RIGHT
+		header += ' ' + g.txtT "EPR",      8, RIGHT
 
 		@playersByPerformance = _.clone @t.playersByID.slice 0,g.N
 		@playersByPerformance = @playersByPerformance.sort (a,b) => 
@@ -145,7 +145,7 @@ export class Standings extends Page
 		header += ' ' + g.txtT "Name", 25,  LEFT
 		for r in range @t.round
 			header += g.txtT "#{r+1}",  6, RIGHT
-		header += ' ' + g.txtT "PR", 8, RIGHT
+		header += ' ' + g.txtT "EPR", 8, RIGHT
 		
 		for player,i in @playersByPerformance
 			if i % @t.ppp == 0 then res.push header
