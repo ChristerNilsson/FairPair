@@ -399,7 +399,6 @@ export class Tournament
 	dumpCanvas : (title,average,canvas,n) ->
 		output = []
 		if title != "" then output.push title
-		# output.push "Sparseness: #{average}  (Average Elo Difference)"
 		header = (str((i + 1) % 10) for i in range n).join(' ')
 		output.push '     ' + header
 		ordning = (p.elo for p in @playersByELO)
@@ -407,9 +406,9 @@ export class Tournament
 		for i in range canvas.length
 			row = canvas[i]
 			nr = str(i + 1).padStart(3)
-			subTotal = @playersByELO[i].eloDiffAbs() #.toFixed(0)
+			subTotal = @playersByELO[i].eloDiffAbs()
 			total += subTotal
-			output.push "#{nr}  #{(str(item) for item in row).join(" ")}  #{ordning[i]} #{subTotal.toFixed(0).padStart(6)}" #{@playersByELO[i].avgEloDiffRel().toFixed(1).padStart(6)}"
+			output.push "#{nr}  #{(str(item) for item in row).join(" ")}  #{ordning[i]} #{subTotal.toFixed(0).padStart(6)}"
 		output.push '     ' + header + ' ' + total.toFixed(0).padStart(12)
 		output.join '\n'
 
@@ -421,8 +420,6 @@ export class Tournament
 				if b == undefined then continue
 				inside = 0 <= a < n and 0 <= b < n
 				if not inside then continue
-				# pa = @playersByELO[a]
-				# pb = @playersByELO[b]
 				canvas[a][b] = g.ALFABET[i]
 				canvas[b][a] = g.ALFABET[i]
 		@dumpCanvas title,@distans(rounds),canvas,n

@@ -22,7 +22,7 @@ export class Standings extends Page
 		header += ' ' + g.txtT "Elo",          4, RIGHT
 		header += ' ' + g.txtT "Name",        25, LEFT
 		header += ''  + g.txtT rheader, 3*@round, LEFT 
-		header += ' ' + g.txtT "Perf.rat",      8, RIGHT
+		header += ' ' + g.txtT "PR",      8, RIGHT
 
 		@playersByPerformance = _.clone @t.playersByID.slice 0,g.N
 		@playersByPerformance = @playersByPerformance.sort (a,b) => 
@@ -42,7 +42,7 @@ export class Standings extends Page
 			value = p.change(@t.round)
 			if value < 1 then s += ' ' + g.txtT "-inf", 7, RIGHT
 			else if value > 3999 then s += ' ' + g.txtT "inf", 7, RIGHT
-			else s += ' ' + g.txtT p.change(@t.round).toFixed(1), 7, RIGHT
+			else s += ' ' + g.txtT p.change(@t.round).toFixed(1+2), 8, RIGHT
 			
 			for r in range g.tournament.round - 1 #- 1
 				x = g.ZOOM[g.state] * (24.2 + 1.8*r)
@@ -145,7 +145,7 @@ export class Standings extends Page
 		header += ' ' + g.txtT "Name", 25,  LEFT
 		for r in range @t.round
 			header += g.txtT "#{r+1}",  6, RIGHT
-		header += ' ' + g.txtT "Perf.rat", 8, RIGHT
+		header += ' ' + g.txtT "PR", 8, RIGHT
 		
 		for player,i in @playersByPerformance
 			if i % @t.ppp == 0 then res.push header
@@ -165,7 +165,7 @@ export class Standings extends Page
 			value = p.change(@t.round)
 			if value < 1 then s += ' ' + g.txtT "-inf", 7, RIGHT
 			else if value > 3999 then s += ' ' + g.txtT "inf", 7, RIGHT
-			else s += ' ' + g.txtT p.change(@t.round+1).toFixed(1), 7, RIGHT
+			else s += ' ' + g.txtT p.change(@t.round+1).toFixed(1+2), 8, RIGHT
 
 			# s += ' ' + g.txtT player.change(@t.round+1).toFixed(1),  7,  RIGHT
 			# s += ' ' + g.txtT player.perChg(@t.round+1).toFixed(1),  7,  RIGHT
