@@ -37,7 +37,6 @@ export class Standings extends Page
 
 		array = (p.performance().toFixed(1) for p in @playersByPerformance)
 		dubletter = _.uniq(_.filter(array, (value, index, array) => _.indexOf(array, value) != _.lastIndexOf(array, value)));
-		console.log(dubletter)
 
 		@lista = new Lista @playersByPerformance, header, @buttons, (p,index,pos) => # returnera strängen som ska skrivas ut. Dessutom ritas lightbulbs här.
 			@y_bulb = (5 + index) * g.ZOOM[g.state] 
