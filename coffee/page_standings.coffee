@@ -21,13 +21,23 @@ export class Standings extends Page
 		header += ' ' + g.txtT "Id",           3, RIGHT
 		header += ' ' + g.txtT "Elo",          4, RIGHT
 		header += ' ' + g.txtT "Name",        25, LEFT
-		header += ''  + g.txtT rheader, 3*@round, LEFT 
-		header += ' ' + g.txtT "EPR",      8, RIGHT
+		header += ''  + g.txtT rheader, 3*@round, LEFT
+		header += ' ' + g.txtT "PR",           7, RIGHT
+		header += ' ' + g.txtT "EPR",          8, RIGHT
 
 		@playersByPerformance = _.clone @t.playersByID.slice 0,g.N
-		@playersByPerformance = @playersByPerformance.sort (a,b) => 
-			if b.change(@t.round+1) == a.change(@t.round+1) then b.elo - a.elo
-			else b.change(@t.round+1) - a.change(@t.round+1)
+		# @playersByPerformance = @playersByPerformance.sort (a,b) => 
+		# 	if b.change(@t.round+1) == a.change(@t.round+1) then b.elo - a.elo
+		# 	else b.change(@t.round+1) - a.change(@t.round+1)
+		@playersByPerformance = @playersByPerformance.sort (a,b) =>
+			ap = a.performance()
+			bp = b.performance()
+			if ap == bp then b.enhanced_performance() - a.enhanced_performance()
+			else bp - ap
+
+		array = (p.performance().toFixed(1) for p in @playersByPerformance)
+		dubletter = _.uniq(_.filter(array, (value, index, array) => _.indexOf(array, value) != _.lastIndexOf(array, value)));
+		console.log(dubletter)
 
 		@lista = new Lista @playersByPerformance, header, @buttons, (p,index,pos) => # returnera strängen som ska skrivas ut. Dessutom ritas lightbulbs här.
 			@y_bulb = (5 + index) * g.ZOOM[g.state] 
@@ -39,11 +49,16 @@ export class Standings extends Page
 			s += ' ' + g.txtT p.elo.toString(),       4,  RIGHT
 			s += ' ' + g.txtT p.name,                25,  LEFT
 			s += ' ' + g.txtT '',      3 * (@t.round-1),  CENTER
-			value = p.change(@t.round)
-			if value < 1 then s += ' ' + g.txtT "-inf", 7, RIGHT
-			else if value > 3999 then s += ' ' + g.txtT "inf", 7, RIGHT
-			else s += ' ' + g.txtT p.change(@t.round).toFixed(1), 8, RIGHT
-			#s += ' ' + g.txtT p.balans(),3,RIGHT
+			value = p.performance() # change(@t.round)
+			perf = p.performance().toFixed(1)
+			if value < 1 then s += ' ' + g.txtT "-inf  ", 8, RIGHT
+			else if value > 3999 then s += ' ' + g.txtT "inf  ", 8, RIGHT
+			else s += ' ' + g.txtT perf, 8, RIGHT
+
+			if perf in dubletter
+				s += ' ' + g.txtT p.enhanced_performance().toFixed(1),8,RIGHT
+			else
+				s += ' ' + g.txtT '',8, RIGHT
 
 			for r in range g.tournament.round - 1 #- 1
 				x = g.ZOOM[g.state] * (24.2 + 1.8*r)
@@ -146,7 +161,8 @@ export class Standings extends Page
 		header += ' ' + g.txtT "Name", 25,  LEFT
 		for r in range @t.round
 			header += g.txtT "#{r+1}",  6, RIGHT
-		header += ' ' + g.txtT "EPR", 8, RIGHT
+		header += ' ' + g.txtT "PR",    7, RIGHT
+		header += ' ' + g.txtT "EPR",   8, RIGHT
 		
 		for player,i in @playersByPerformance
 			if i % @t.ppp == 0 then res.push header
@@ -164,9 +180,10 @@ export class Standings extends Page
 
 			p = player
 			value = p.change(@t.round)
-			if value < 1 then s += ' ' + g.txtT "-inf", 7, RIGHT
-			else if value > 3999 then s += ' ' + g.txtT "inf", 7, RIGHT
-			else s += ' ' + g.txtT p.change(@t.round+1).toFixed(1), 8, RIGHT
+			s += ' ' + g.txtT p.performance().toFixed(1), 8, RIGHT
+			if value < 1 then s += ' ' + g.txtT "-inf  ", 8, RIGHT
+			else if value > 3999 then s += ' ' + g.txtT "inf  ", 8, RIGHT
+			else s += ' ' + g.txtT p.enhanced_performance().toFixed(1), 8, RIGHT
 			# s += ' ' + g.txtT p.balans(),3,RIGHT
 			# s += ' ' + g.txtT player.change(@t.round+1).toFixed(1),  7,  RIGHT
 			# s += ' ' + g.txtT player.perChg(@t.round+1).toFixed(1),  7,  RIGHT
