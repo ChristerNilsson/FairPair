@@ -22,21 +22,17 @@ export class Standings extends Page
 		header += ' ' + g.txtT "Elo",          4, RIGHT
 		header += ' ' + g.txtT "Name",        25, LEFT
 		header += ''  + g.txtT rheader, 3*@round, LEFT
-		header += ' ' + g.txtT "PR",           7, RIGHT
-		header += ' ' + g.txtT "EPR",          8, RIGHT
+		header += ' ' + g.txtT "EPR",          7, RIGHT
+		header += ' ' + g.txtT "PP",           7, RIGHT
 
 		@playersByPerformance = _.clone @t.playersByID.slice 0,g.N
-		# @playersByPerformance = @playersByPerformance.sort (a,b) => 
-		# 	if b.change(@t.round+1) == a.change(@t.round+1) then b.elo - a.elo
-		# 	else b.change(@t.round+1) - a.change(@t.round+1)
 		@playersByPerformance = @playersByPerformance.sort (a,b) =>
-			ap = a.performance()
-			bp = b.performance()
-			if ap == bp then b.enhanced_performance() - a.enhanced_performance()
-			else bp - ap
+			ap = a.enhanced_performance()
+			bp = b.enhanced_performance()
+			bp - ap
 
 		array = (p.performance().toFixed(1) for p in @playersByPerformance)
-		dubletter = _.uniq(_.filter(array, (value, index, array) => _.indexOf(array, value) != _.lastIndexOf(array, value)));
+		# dubletter = _.uniq(_.filter(array, (value, index, array) => _.indexOf(array, value) != _.lastIndexOf(array, value)));
 
 		@lista = new Lista @playersByPerformance, header, @buttons, (p,index,pos) => # returnera strängen som ska skrivas ut. Dessutom ritas lightbulbs här.
 			@y_bulb = (5 + index) * g.ZOOM[g.state] 
@@ -48,16 +44,8 @@ export class Standings extends Page
 			s += ' ' + g.txtT p.elo.toString(),       4,  RIGHT
 			s += ' ' + g.txtT p.name,                25,  LEFT
 			s += ' ' + g.txtT '',      3 * (@t.round-1),  CENTER
-			value = p.performance() # change(@t.round)
-			perf = p.performance().toFixed(1)
-			if value < 1 then s += ' ' + g.txtT "-inf  ", 8, RIGHT
-			else if value > 3999 then s += ' ' + g.txtT "inf  ", 8, RIGHT
-			else s += ' ' + g.txtT perf, 8, RIGHT
-
-			if perf in dubletter
-				s += ' ' + g.txtT p.enhanced_performance().toFixed(1),8,RIGHT
-			else
-				s += ' ' + g.txtT '',8, RIGHT
+			s += ' ' + g.txtT p.enhanced_performance().toFixed(1),8,RIGHT
+			s += ' ' + g.txtT (p.score(@t.round)/2).toFixed(1),6,RIGHT
 
 			for r in range g.tournament.round - 1 #- 1
 				x = g.ZOOM[g.state] * (24.2 + 1.8*r)
@@ -80,7 +68,6 @@ export class Standings extends Page
 				s += ' ' + g.txtT '',                      4,  RIGHT
 				s += ' ' + g.txtT 'has a bye',            25,  LEFT
 				s += ' ' + g.txtT '',       3 * (@t.round-1),  LEFT
-				# g.help = "#{pa.elo} #{pa.name} has a bye                   #{pa.elo.toFixed(1)}" # => chg = #{g.K/2}"
 				s += ' ' + g.txtT "#{pa.elo.toFixed(1)}",        7, RIGHT
 				g.help = s
 
@@ -91,13 +78,8 @@ export class Standings extends Page
 				s += ' ' + g.txtT '',                      4,  RIGHT
 				s += ' ' + g.txtT 'has a pause',          25,  LEFT
 				s += ' ' + g.txtT '',       3 * (@t.round-1),  LEFT
-				# g.help = "#{pa.elo} #{pa.name} has a bye                   #{pa.elo.toFixed(1)}" # => chg = #{g.K/2}"
 				s += ' ' + g.txtT "0.0",                         7, RIGHT
 				g.help = s
-
-				# 	s += "#{pa.elo} #{pa.name} has a pause                    0.0" # => chg = 0"
-
-				# g.help = s
 
 			if b >= 0				
 				pb = @t.playersByID[b]
@@ -160,8 +142,9 @@ export class Standings extends Page
 		header += ' ' + g.txtT "Name", 25,  LEFT
 		for r in range @t.round
 			header += g.txtT "#{r+1}",  6, RIGHT
-		header += ' ' + g.txtT "PR",    7, RIGHT
-		header += ' ' + g.txtT "EPR",   8, RIGHT
+		header += ' ' + g.txtT "EPR",   7, RIGHT
+		header += ' ' + g.txtT "PP",    7, RIGHT
+		header += ' ' + g.txtT " ELOS",  7, LEFT
 		
 		for player,i in @playersByPerformance
 			if i % @t.ppp == 0 then res.push header
@@ -178,14 +161,13 @@ export class Standings extends Page
 					s += g.txtT "#{1+player.opp[r]}#{g.RINGS[player.col[r][0]]}#{"0½1"[player.res[r]]}", 6,  RIGHT
 
 			p = player
-			value = p.change(@t.round)
-			s += ' ' + g.txtT p.performance().toFixed(1), 8, RIGHT
-			if value < 1 then s += ' ' + g.txtT "-inf  ", 8, RIGHT
-			else if value > 3999 then s += ' ' + g.txtT "inf  ", 8, RIGHT
-			else s += ' ' + g.txtT p.enhanced_performance().toFixed(1), 8, RIGHT
-			# s += ' ' + g.txtT p.balans(),3,RIGHT
-			# s += ' ' + g.txtT player.change(@t.round+1).toFixed(1),  7,  RIGHT
-			# s += ' ' + g.txtT player.perChg(@t.round+1).toFixed(1),  7,  RIGHT
+			s += ' ' + g.txtT p.enhanced_performance().toFixed(1), 8, RIGHT
+			s += ' ' + g.txtT (p.score(@t.round+1)/2).toFixed(1), 6, RIGHT
+
+			for r in range @t.round
+				id = p.opp[r]
+				s += " " + @t.playersByID[id].elo
+			s += " " + g.average.toFixed 0
 			res.push s 
 			if i % @t.ppp == @t.ppp-1 then res.push "\f"
 		res.push "\f"

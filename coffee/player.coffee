@@ -44,16 +44,13 @@ export class Player
 	enhanced_performance : ->
 		score = 0 
 		ratings = []
-		total_elo = 0
 		for r in range @res.length
 			if @opp[r] == g.BYE then continue
 			if @opp[r] == g.PAUSE then continue
 			score += @res[r]/2
 			ratings.push g.tournament.playersByID[@opp[r]].elo
-			total_elo += g.tournament.playersByID[@opp[r]].elo
 		score += 0.5 # fiktiv remi
-		ratings.push total_elo / ratings.length # local average opponent
-		# print 'EPR',ratings,score,@performance_rating(ratings,score)
+		ratings.push g.average # global average opponent elo
 		@performance_rating ratings,score
 
 	change : (rounds) -> @enhanced_performance()
@@ -64,18 +61,6 @@ export class Player
 		for id in @opp.slice 0, @opp.length # - 1
 			if id >= 0 then res.push abs @elo - g.tournament.playersByID[id].elo
 		g.sum res
-
-	# avgEloDiffAbs : ->
-	# 	res = []
-	# 	for id in @opp.slice 0, @opp.length # - 1
-	# 		if id >= 0 then res.push abs @elo - g.tournament.playersByID[id].elo
-	# 	if res.length == 0 then 0 else g.sum(res) / res.length
-
-	# avgEloDiffRel : ->
-	# 	res = []
-	# 	for id in @opp.slice 0, @opp.length # - 1
-	# 		if id >= 0 then res.push g.tournament.playersByID[id].elo
-	# 	if res.length == 0 then 0 else @elo - g.sum(res) / res.length
 
 	balans : -> # färgbalans
 		result = 0

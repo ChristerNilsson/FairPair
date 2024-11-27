@@ -5,7 +5,8 @@
 [Try it!](https://christernilsson.github.io/FairPair)
 
 * FairPair makes players of similar strength meet
-* To make players comparable, each score is weighted with the elo of the opponent
+* To make players comparable, Enhanced Performance Rating is used
+* EPR = add a draw against an average player before calculating Performance Rating
 
 ## Disadvantages with Swiss 
 
