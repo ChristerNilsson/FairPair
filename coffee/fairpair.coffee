@@ -10,7 +10,7 @@ import { Active } from './page_active.js'
 
 export handleFile = (filename,data) -> g.tournament.fetchData filename,data	
 
-g.RINGS = {'b':'•', ' ':' ', 'w':'o'}
+g.RINGS = {'b':'b', ' ':' ', 'w':'w'}
 g.ASCII = '0123456789abcdefg'
 g.ALFABET = '123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' # 62 ronder maximalt
 
