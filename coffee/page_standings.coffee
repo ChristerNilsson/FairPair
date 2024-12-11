@@ -22,13 +22,13 @@ export class Standings extends Page
 		header += ' ' + g.txtT "Elo",          4, RIGHT
 		header += ' ' + g.txtT "Name",        25, LEFT
 		header += ''  + g.txtT rheader, 3*@round, LEFT
-		header += ' ' + g.txtT "EPR",          7, RIGHT
+		header += ' ' + g.txtT "PR",           7, RIGHT
 		header += ' ' + g.txtT "PP",           7, RIGHT
 
 		@playersByPerformance = _.clone @t.playersByID.slice 0,g.N
 		@playersByPerformance = @playersByPerformance.sort (a,b) =>
-			ap = a.enhanced_performance()
-			bp = b.enhanced_performance()
+			ap = a.performance()
+			bp = b.performance()
 			bp - ap
 
 		array = (p.performance().toFixed(1) for p in @playersByPerformance)
@@ -44,7 +44,7 @@ export class Standings extends Page
 			s += ' ' + g.txtT p.elo.toString(),       4,  RIGHT
 			s += ' ' + g.txtT p.name,                25,  LEFT
 			s += ' ' + g.txtT '',      3 * (@t.round-1),  CENTER
-			s += ' ' + g.txtT p.enhanced_performance().toFixed(1),8,RIGHT
+			s += ' ' + g.txtT p.performance().toFixed(1),8,RIGHT
 			s += ' ' + g.txtT (p.score(@t.round)/2).toFixed(1),6,RIGHT
 
 			for r in range g.tournament.round - 1 #- 1
@@ -161,7 +161,7 @@ export class Standings extends Page
 					s += g.txtT "#{1+player.opp[r]}#{g.RINGS[player.col[r][0]]}#{"0½1"[player.res[r]]}", 6,  RIGHT
 
 			p = player
-			s += ' ' + g.txtT p.enhanced_performance().toFixed(1), 8, RIGHT
+			s += ' ' + g.txtT p.performance().toFixed(1), 8, RIGHT
 			s += ' ' + g.txtT (p.score(@t.round+1)/2).toFixed(1), 6, RIGHT
 
 			for r in range @t.round

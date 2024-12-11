@@ -21,6 +21,22 @@ export class Player
 		g.sum(1 / (1 + 10**((rating - own_rating) / 400)) for rating in ratings)   
 
 	performance_rating : (ratings, score) ->
+		if ratings.length == 1 and score == 0
+			a = @performance_rating ratings, 0.50
+			b = @performance_rating ratings, 0.25
+			return 2*b-a
+		if ratings.length == 1 and score == 1
+			a = @performance_rating ratings, 0.50
+			b = @performance_rating ratings, 0.75
+			return 2*b-a
+		if score == 0
+			a = @performance_rating ratings, 1.0
+			b = @performance_rating ratings, 0.5
+			return 2*b-a
+		if score == ratings.length
+			a = @performance_rating ratings, score - 1.0
+			b = @performance_rating ratings, score - 0.5
+			return 2*b-a
 		lo = 0
 		hi = 4000
 		while hi - lo > 0.001
@@ -41,19 +57,19 @@ export class Player
 			ratings.push g.tournament.playersByID[@opp[r]].elo
 		@performance_rating ratings,score
 
-	enhanced_performance : ->
-		score = 0 
-		ratings = []
-		for r in range @res.length
-			if @opp[r] == g.BYE then continue
-			if @opp[r] == g.PAUSE then continue
-			score += @res[r]/2
-			ratings.push g.tournament.playersByID[@opp[r]].elo
-		score += 0.5 # fiktiv remi
-		ratings.push g.average # global average opponent elo
-		@performance_rating ratings,score
+	# enhanced_performance : ->
+	# 	score = 0 
+	# 	ratings = []
+	# 	for r in range @res.length
+	# 		if @opp[r] == g.BYE then continue
+	# 		if @opp[r] == g.PAUSE then continue
+	# 		score += @res[r]/2
+	# 		ratings.push g.tournament.playersByID[@opp[r]].elo
+	# 	score += 0.5 # fiktiv remi
+	# 	ratings.push g.average # global average opponent elo
+	# 	@performance_rating ratings,score
 
-	change : (rounds) -> @enhanced_performance()
+	change : (rounds) -> @performance()
 	score : (rounds) -> g.sum (parseInt @res[r] for r in range rounds-1)
 
 	eloDiffAbs : ->
