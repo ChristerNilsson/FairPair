@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Introduction</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h2 id="introduction">Introduction</h2>
+<h3 id="history-of-tournament-systems">History of tournament systems</h3>
+<p><a href="https://en.wikipedia.org/wiki/Swiss-system_tournament">Swiss/Monrad/Dutch</a></p>
+<table>
+<thead>
+<tr>
+<th>English name</th>
+<th>Swedish name</th>
+<th>Method</th>
+<th>Winning criteria</th>
+<th style="text-align:center">Tiebreaks</th>
+<th>Inventor</th>
+<th style="text-align:center">Country</th>
+<th>Year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Elimination</td>
+<td>Cup</td>
+<td>one loss and out</td>
+<td></td>
+<td style="text-align:center"></td>
+<td></td>
+<td style="text-align:center">UK</td>
+<td>1851</td>
+</tr>
+<tr>
+<td>Round Robin</td>
+<td>Berger</td>
+<td>all versus all</td>
+<td>Score</td>
+<td style="text-align:center">Yes</td>
+<td>Johann Berger</td>
+<td style="text-align:center">AU</td>
+<td>1895</td>
+</tr>
+<tr>
+<td>Swiss/Old</td>
+<td>Monrad</td>
+<td>same score meet</td>
+<td>Score</td>
+<td style="text-align:center">Yes</td>
+<td>Dr. Julius Müller</td>
+<td style="text-align:center">CH</td>
+<td>1895</td>
+</tr>
+<tr>
+<td>Swiss</td>
+<td>Schweizer</td>
+<td>same score meet</td>
+<td>Score</td>
+<td style="text-align:center">Yes</td>
+<td>(unknown)</td>
+<td style="text-align:center">NL</td>
+<td>197•</td>
+</tr>
+<tr>
+<td>FairPair</td>
+<td>FairPair</td>
+<td><strong>same elos meet</strong></td>
+<td><strong>Performance Rating</strong></td>
+<td style="text-align:center">No</td>
+<td>Christer Nilsson</td>
+<td style="text-align:center">SE</td>
+<td>2024</td>
+</tr>
+</tbody>
+</table>
+<h4 id="the-main-difference-between-swissold-and-swiss-or-as-we-say-in-sweden-monrad-and-schweizer">The main difference between Swiss/Old and Swiss (or as we say in Sweden, Monrad and Schweizer)</h4>
+<p>Example: Ten players, sorted in strength, with the same score:</p>
+<pre><code>Swiss/Old: 1-2  3-4  5-6  7-8  9-10  (Monrad)
+Swiss:     1-6  2-7  3-8  4-9  5-10  (Schweizer)
+</code></pre>
+<h4 id="the-main-differences-between-swiss-and-fairpair">The main differences between Swiss and FairPair</h4>
+<ul>
+<li>Players with <strong>similar elo</strong> rating meet</li>
+<li><strong>Performance Rating</strong> is used to decide the winner</li>
+</ul>
+<h4 id="similarity-between-round-robin-and-fairpair">Similarity between Round Robin and FairPair</h4>
+<ul>
+<li>The pairing of all rounds may be done <strong>before</strong> the first round</li>
+</ul>
+<h3 id="comparison-of-swiss-and-fairpair">Comparison of Swiss and FairPair</h3>
+<p>Hans Rånby, rated 1893, scored 4 points of 8 (50%) in Tyresö Open 2024.<br>
+He lost 3 games against stronger players and won 4 games against weaker players, almost as expected.<br>
+He had the following elo differences:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th style="text-align:right">1</th>
+<th style="text-align:right">2</th>
+<th style="text-align:right">3</th>
+<th style="text-align:right">4</th>
+<th style="text-align:right">5</th>
+<th style="text-align:right">6</th>
+<th style="text-align:right">7</th>
+<th style="text-align:right">8</th>
+<th style="text-align:right">Abs Avg</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Swiss</td>
+<td style="text-align:right">-271</td>
+<td style="text-align:right">215</td>
+<td style="text-align:right">-160</td>
+<td style="text-align:right">-115</td>
+<td style="text-align:right">-252</td>
+<td style="text-align:right">442</td>
+<td style="text-align:right">-93</td>
+<td style="text-align:right">153</td>
+<td style="text-align:right">213</td>
+</tr>
+<tr>
+<td>Score</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">50%</td>
+</tr>
+<tr>
+<td>FairPair</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">-30</td>
+<td style="text-align:right">-14</td>
+<td style="text-align:right">7</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">-4</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">10</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4WErr8g0UL_Nb5Qp4Qkh-sVEBT9Hc7OpTtBbnWJgLUajzIMLzNeyB20g6PZo5Rl4dlUITOWRlkqNF/pubchart?oid=1489485842&amp;format=interactive">Graph</a></p>
+<h3 id="swiss-vs-fairpair-matrix">Swiss vs FairPair (matrix)</h3>
+<p>Tyresö Open 2024 (78 players, 8 rounds)</p>
+<ul>
+<li>The players are aligned horizontally and vertically</li>
+<li>Elo sorted, the strongest player is in the upper, left, corner</li>
+<li>The cells contains the round numbers, 1 to 8</li>
+<li>The main diagonal is not used, as a player can't meet himself</li>
+</ul>
+<h4 id="round-numbers">Round numbers</h4>
+<ul>
+<li><a href="matrices/dutch-78.html">Swiss Matrix</a></li>
+<li><a href="matrices/fairpair-78.html">FairPair Matrix</a></li>
+</ul>
+<h4 id="tournament-tables">Tournament tables</h4>
+<ul>
+<li><a href="https://member.schack.se/ShowTournamentServlet?id=13664&amp;listingtype=2">Swiss</a></li>
+<li><a href="https://christernilsson.github.io/FloatingBerger/?TITLE=Tyres%C3%B6+Open+2024&amp;GAMES=1&amp;ROUNDS=8&amp;SORT=1&amp;ONE=1&amp;BALANCE=1&amp;A=1&amp;B=1&amp;C=1&amp;p=2416+Hampus+S%C3%B6rensen&amp;p=2413+Michael+Wiedenkeller&amp;p=2366+Joar+%C3%96lund&amp;p=2335+Joar+%C3%96stlund&amp;p=2272+Vidar+Grahn&amp;p=2235+Leo+Crevatin&amp;p=2213+D+Vesterbaek+Pedersen&amp;p=2141+Victor+Muntean&amp;p=2113+Filip+Bj%C3%B6rkman&amp;p=2109+Vidar+Seiger&amp;p=2108+Pratyush+Tripathi&amp;p=2093+Erik+Dingertz&amp;p=2076+Michael+Duke&amp;p=2065+Matija+Sakic&amp;p=2048+Michael+Mattsson&amp;p=2046+Lukas+Willstedt&amp;p=2039+Lavinia+Valcu&amp;p=2035+Oliver+Nilsson&amp;p=2031+Lennart+Evertsson&amp;p=2022+Jussi+Jakenberg&amp;p=2001+Aryan+Banerjee&amp;p=1985+Tim+Nordenfur&amp;p=1977+Elias+Kingsley&amp;p=1954+Per+Isaksson&amp;p=1944+C+Rose+Mariano&amp;p=1936+Lo+Ljungros&amp;p=1923+Herman+Enholm&amp;p=1907+Carina+Wickstr%C3%B6m&amp;p=1897+Joel+%C3%85hfeldt&amp;p=1896+Stefan+Nyberg&amp;p=1893+Hans+R%C3%A5nby&amp;p=1889+Mikael+Blom&amp;p=1886+Joar+Berglund&amp;p=1885+Mikael+Helin&amp;p=1880+Olle+%C3%85lgars&amp;p=1878+Jesper+Borin&amp;p=1871+K+Sergelenbaatar&amp;p=1852+Roy+Karlsson&amp;p=1848+Fredrik+M%C3%B6llerstr%C3%B6m&amp;p=1846+Kenneth+Fahlberg&amp;p=1835+Peder+Gedda&amp;p=1833+Karam+Masoudi&amp;p=1828+Christer+Johansson&amp;p=1827+Anders+Kallin&amp;p=1818+Morris+Bergqvist&amp;p=1803+Martti+Hamina&amp;p=1800+Bj%C3%B6rn+L%C3%B6fstr%C3%B6m&amp;p=1796+N+Bychkov+Zwahlen&amp;p=1794+Jonas+Sandberg&amp;p=1793+Rohan+Gore&amp;p=1787+Kjell+Jernselius&amp;p=1783+Radu+Cernea&amp;p=1778+Mukhtar+Jamshedi&amp;p=1768+Neo+Malmquist&amp;p=1763+Joacim+Hultin&amp;p=1761+Lars-%C3%85ke+Pettersson&amp;p=1748+Andr%C3%A9+J+Lindebaum&amp;p=1733+Lars+Eriksson&amp;p=1733+Hugo+Hardwick&amp;p=1728+Hugo+Sundell&amp;p=1726+Simon+Johansson&amp;p=1721+Jouni+Kaunonen&amp;p=1709+Eddie+Parteg&amp;p=1695+Sid+Van+Den+Brink&amp;p=1691+Svante+N%C3%B6dtveidt&amp;p=1688+Anders+Hillbur&amp;p=1680+Sayak+Raj+Bardhan&amp;p=1671+Salar+Banavi&amp;p=1650+Patrik+Wiss&amp;p=1641+Anton+Nordenfur&amp;p=1624+Jens+Ahlstr%C3%B6m&amp;p=1622+Hanns+Ivar+Uniyal&amp;p=1579+Christer+Carmegren&amp;p=1575+Christer+Nilsson&amp;p=1524+M%C3%A5ns+N%C3%B6dtveidt&amp;p=1480+Karl-Oskar+Rehnberg&amp;p=1417+David+Broman&amp;p=1406+Vida+Radon&amp;p=1400+M+de+Lafonteyne&amp;p=1400+Ivar+Arnshav&amp;p=1400+Kristoffer+Schultz&amp;p=0000+BYE">FairPair</a></li>
+</ul>
+
+            
+            
+        </body>
+        </html>

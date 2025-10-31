@@ -1,22 +1,292 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>FairPair</title>
-		<link rel="icon" type="image/x-icon" href="favicon.ico">
-		<script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js" ></script>
-		<script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" ></script>
-		<style>html,body {margin: 0;padding: 0;overflow-x: hidden; overflow-y: auto;}</style>
-	</head>
-	<body>
-		<input type="file" style="position:absolute; top:1px; left:50%" accept=".txt" onchange="handleFileChange(event)">
-		<script type="module" src="coffee/fairpair.js"></script>
-		<script type="module">
-			import { handleFile } from './coffee/fairpair.js';
-			window.handleFileChange = function(event) {
-				const file = event.target.files[0];
-				console.log(file.name);
-				if (file) {file.text().then(text => {handleFile(file.name,text);}).catch(error => {console.error('Error reading file:', error);});}
-			}
-		</script>
-	</body>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="format-detection" content="telephone=no,address=no,email=no">
+  <style>
+
+    .panel {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 14px;
+      justify-content: center;
+    }
+
+    .bar {
+      display: flex;
+      justify-content: center; /* <-- centrera horisontellt */
+      gap: 10px;               /* mellanrum mellan knappar */
+      margin-top: 12px;
+    }
+
+    textarea {
+      width: 100%;
+      font: 14px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    body { 
+      font-family: sans-serif; 
+      margin: 1em 0em; 
+    }
+
+    .info { background: #f0f0f0; padding: 1em; }
+    pre { white-space: pre-wrap; word-wrap: break-word; }
+
+    table {
+      border-collapse: collapse;
+      margin-top: 1px;
+      width: 100%;
+      font-family: sans-serif;
+    }
+
+    td,th { border: 1px solid black; text-align: center; }
+
+    th {
+      background-color: #2f4f6f; /* mörkblå */
+      color: white;
+      padding: 6px 10px;
+    }
+
+    td {
+      padding: 5px 10px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f4f8; /* ljusgråblå */
+    }
+
+    tr:hover {
+      background-color: #e3edf9; /* diskret hover */
+    }
+
+    table.clickableRows tr { cursor: pointer; }
+    .clickableCols { cursor: pointer; }
+
+    header {
+      top: 0;
+      width: 100%;
+      background: #2f4f6f;
+      padding: 5px;
+      display: flex;
+      justify-content: left;
+      z-index: 1000;
+      align-items: left;
+    }
+
+    h3 {
+      text-align: center;
+      margin-top: 15px;
+      margin-bottom: 0px;
+      padding: 6px 0;
+      font-weight: 600;
+      font-size: 1.2em;
+    }
+
+    .menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #2f4f6f;
+      padding: 5px 10%;
+      display: flex;
+      justify-content: space-between; /* zoner till vänster + center */
+      align-items: center;
+      z-index: 1000;
+
+      margin: 0 auto;    /* centrera hela menyn */
+      padding: 5px 5%;   /* lite inre luft också */
+    }
+
+    .menu .zone.left {
+       margin-left: 0%;
+    }
+
+    .menu .zone.right {
+      margin-right: 10%;
+    }    
+
+    /* knapparnas stil (exempel) */
+    .menu button, .pseudo-btn {
+      background: #fff;
+      color: #2f4f6f;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 3px 7px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* pseudo-knapp (vit bokstav, ingen ram) */
+    .pseudo-btn {
+      background: transparent;
+      color: #fff;
+      border: 1px solid transparent;
+      cursor: default;
+    }
+
+   .groups {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;   /* <-- centrera i raden */
+      align-content: flex-start;  /* hur radblocken placeras vertikalt */
+      align-items: flex-start;    /* undvik utdragna höjder */
+      gap: 6px;                   /* avstånd mellan grupper */
+      width: 100%;
+    }
+
+    .group {
+      flex: 0 0 auto;             /* behåll egen bredd, ingen stretch */
+      border-collapse: collapse;
+      table-layout: auto;
+      width: auto;
+      /* ta bort margin-right – gap sköter avståndet */
+    }
+    
+    .group td {
+      border: 1px solid #ccc;
+      padding: 3px 5px;
+      white-space: nowrap;
+    }
+
+    @media print {
+      .no-print {
+        display: none;
+      }
+    }
+
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+<div class="panel" id="panel">
+
+<!-- <textarea id="textarea" rows="25" cols="50" style="font-family:monospace" autofocus>
+TITLE = Best of Sweden
+ROUNDS = 4
+GAMES = 1
+SORT = 1
+
+2648 Grandelius, Nils
+2578 Hellers, Ferdinand 
+2550 Hellsten, Johan 
+2519 Andersson, Ulf 
+2499 Cicak, Slavko
+2495 Berg, Emanuel
+2494 Galperin, Platon
+2493 Hall, Jesper
+</textarea> -->
+
+<textarea id="textarea" rows="25" cols="50" style="font-family:monospace" max-width="680px" autofocus>
+TITLE = Tyresö Open 2024
+ROUNDS = 3
+GAMES = 1
+BALANCE = 1
+SORT = 1
+P = 8
+BASE = 90
+INCR = 30
+
+1688 Anders Hillbur
+1827 Anders Kallin
+1748 André J Lindebaum
+1641 Anton Nordenfur
+2001 Aryan Banerjee
+1800 Björn Löfström
+1944 C Rose Mariano
+1907 Carina Wickström
+1579 Christer Carmegren
+1828 Christer Johansson
+1575 Christer Nilsson
+2213 D Vesterbaek Pedersen
+1417 David Broman
+1709 Eddie Parteg
+1977 Elias Kingsley
+2093 Erik Dingertz
+2113 Filip Björkman
+1848 Fredrik Möllerström
+2416 Hampus Sörensen
+1622 Hanns Ivar Uniyal
+1893 Hans Rånby
+1923 Herman Enholm
+1733 Hugo Hardwick
+1728 Hugo Sundell
+1400 Ivar Arnshav
+1624 Jens Ahlström
+1878 Jesper Borin
+1763 Joacim Hultin
+1886 Joar Berglund
+2366 Joar Ölund
+2335 Joar Östlund
+1897 Joel Åhfeldt
+1794 Jonas Sandberg
+1721 Jouni Kaunonen
+2022 Jussi Jakenberg
+1871 K Sergelenbaatar
+1833 Karam Masoudi
+1480 Karl-Oskar Rehnberg
+1846 Kenneth Fahlberg
+1787 Kjell Jernselius
+1400 Kristoffer Schultz
+1733 Lars Eriksson
+1761 Lars-Åke Pettersson
+2039 Lavinia Valcu
+2031 Lennart Evertsson
+2235 Leo Crevatin
+1936 Lo Ljungros
+2046 Lukas Willstedt
+1400 M de Lafonteyne
+1803 Martti Hamina
+2065 Matija Sakic
+2076 Michael Duke
+2048 Michael Mattsson
+2413 Michael Wiedenkeller
+1889 Mikael Blom
+1885 Mikael Helin
+1818 Morris Bergqvist
+1778 Mukhtar Jamshedi
+1524 Måns Nödtveidt
+1796 N Bychkov Zwahlen
+1768 Neo Malmquist
+2035 Oliver Nilsson
+1880 Olle Ålgars
+1650 Patrik Wiss
+1835 Peder Gedda
+1954 Per Isaksson
+2108 Pratyush Tripathi
+1783 Radu Cernea
+1793 Rohan Gore
+1852 Roy Karlsson
+1671 Salar Banavi
+1680 Sayak Raj Bardhan
+1695 Sid Van Den Brink
+1726 Simon Johansson
+1896 Stefan Nyberg
+1691 Svante Nödtveidt
+1985 Tim Nordenfur
+2141 Victor Muntean
+1406 Vida Radon
+2272 Vidar Grahn
+2109 Vidar Seiger
+</textarea>
+
+<div class="bar">
+  <button id="help">Help</button>
+  <button id="continue">Continue</button>
+</div>
+
+</div>
+
+<pre id="info"></pre>
+<div id="hdr"></div>
+<div id="players"></div>
+<div id="tables" ></div>
+<div id="names"  ></div>
+
+<script type="module" src="test.js"></script>
+<script type="module" src="tournament.js"></script>
+
+</body>
 </html>

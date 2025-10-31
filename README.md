@@ -1,73 +1,72 @@
-# FairPair
+# Floating Berger
 
-## Advantages with FairPair
+[Try it!](https://christernilsson.github.io/FloatingBerger/)
 
-[Try it!](https://christernilsson.github.io/FairPair)
+Add the players elo ratings and names 
 
-* FairPair makes players of similar strength meet
-* To make players comparable, Enhanced Performance Rating is used
-* EPR = add a draw against an average player before calculating Performance Rating
+```
+TITLE = Summer tournament RIO 2025
+GAMES = 1
+ROUNDS = 4
+SORT = 0
+BALANCE = 1
 
-## Disadvantages with Swiss 
+1698 Onni Aikio
+1558 Helge Bergström
+1549 Jonas Hök
+1679 Lars Johansson
+1400 Per Eriksson
 
-* A win against the strongest is worth exactly as much as a win against the weakest
-* Big elo gaps gives very little new information
+1653 Christer Nilsson
+1673 Per Hamnström
+1504 Thomas Paulin
+1706 Abbas Razavi
+1650 Jouko Liistamo
 
-## Motivation
+```
 
-[Swiss Matrix](swiss-78.txt)  
-[ELO Matrix](elo-78.txt)  
+If you are playing double rounds, set GAMES = 2
 
-The Swiss Matrix shows the games actually played in a tournament paired with Swiss.  
-The ELO Matrix shows which games would actually be played in a tournament paired with FairPair.  
-The diagonal is marked with asterisks as players never meet themselves.  
-The axes contains the elos of the players.  
-The numbers in the matrices are round numbers.  
-The Swiss Matrix is quite spread out, which indicates many games with large elo gaps.  
+Enter the result for **white** in the Table list order  
 
-## Swiss vs FairPair
+Explanation
+```
+r1 = round 1
 
-* Upper right corner: the strongest players. Small gaps
-* Lower left corner: the weakest players. Small gaps
-* Upper left and lower right corner: Big gaps where strong meets weak
+0 = white loss
+1 = draw
+2 = white win
+x = game not played yet
+```
 
-[Bubble Chart](https://christernilsson.github.io/2024/027-BubbleChart)  
+# Usage
 
-[Manual](markdown/manual.md)  
+* Click on other columns, sorts the players
 
-## Links
+# Differences against other pairing systems
 
-[14 players](tournaments/14.txt)  
+* The elo rating decides. The differences are minimized
+* Tie breaks are seldom needed
+* All rounds are paired initially
+* You mey play the games in any order
+* No need to divide the tournament in separate Berger groups
+* All players know when they will meet whom. Like Berger
+* Simple handling of the pairing process
+* All information is stored in the url, ready to be published
 
-[78 players](tournaments/78.txt)  
+# Mind this
 
-## Instructions for organizers
-* Edit one of the files above.
-* Add the elos and names of the players, eventually in alphabetical order. Like 1601!NILSSON Christer
-* Fields
-	* **TITLE** the title of the tournament. Optional
-	* **DATE** the Date. Optional
-	* **TPP** Tables Per Page. Default 30. Optional
-	* **PPP** Players Per Page. Default 60. Optional
-	* **PAUSED** id:s of paused players. Optional
-	* elos and names, separated with an exclamation sign. Mandatory
+* After starting the tournament, you are only allowed to edit the results
+* Changing elos, SORT, ROUNDS, BALANCE or GAMES is not allowed
+* Always print the Table lists. These are your backups
 
-[Calculation](markdown/calculation.md)
+# BALANCE
 
-## Number of Rounds Limit
+* BALANCE == 0. Mainly double round
+* BALANCE == 1. Mainly single round
 
-14 active players can pair up to  8 rounds (57%).  
-78 active players can pair up to 46 rounds (59%).   
+# Development
 
-If you need more rounds, consider a round robin Berger instead.
+ONE is used to show zero or one based indexes
 
-## Questions & Answers
 
-Q1. Sidorna i .prn separeras ej.
-A1. Installera TextPad eller annan editor. Finns inget sätt att få Notepad att hantera FormFeed.
-
-Q2. Vad menas med EPR?
-A2. EPR betyder Enhanced Performance Rating och innebär att alla spelare får en remi mot medelspelaren vid beräkning av PR. Detta får till följd att ingen spelare hamnar på inf eller -inf.
-
-Q3. Varför har man inte exakt 50% vita ronder?
-A3. Störst obalans kan inträffa vid jämnt antal ronder, t ex 3+5, för en del spelare. Problemet minskar om man använder udda antal ronder.

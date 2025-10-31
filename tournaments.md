@@ -1,0 +1,1 @@
+[2025-10-29 Seniorschack Stockholm](https://fairpair.se/?TITLE=FairPair+29+okt+2025&GAMES=2&ROUNDS=3&SORT=1&currSort=R&ONE=1&BALANCE=1&A=1&B=1&C=1&p=2200+Lars+OA+Hedlund&p=1800+Abbas+Razavi&p=1776+Dimiter+K&p=1689+G%C3%B6rgen+Antonsson&p=1570+Atos+Gordh&p=1513+Bengt+Granath&p=1507+Christer+Nilsson&p=1476+Peter+Eldin&r1=0212&r2=2222&r3=0220&r4=2202&r5=2120&r6=0102)  

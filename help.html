@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>FairPair</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="fairpair">FairPair</h1>
+<p><a href="introduction.html">Introduction</a></p>
+<p><a href="https://christernilsson.github.io/HugoLabServer/rating/">Ratings</a></p>
+<p><a href="https://christernilsson.github.io/HugoLabServer/klubben/medlemmar/jan-christer-nilsson/performance_calculator/">Performance Calculator</a></p>
+<p><a href="tournaments.html">Tournaments</a></p>
+<h2 id="pages">Pages</h2>
+<pre><code>A Standings:  id • name • elo • rounds • points • performance rating
+B Tables: table • white • elo • elo • black • result
+C Names:  name • table • colour
+</code></pre>
+<h2 id="keys-for-a-b-and-c">Keys for A, B and C</h2>
+<p>Press a key or click a button.</p>
+<pre><code>   ?      : Help
+ A B C    : Page A, B or C
+  ← →     : Round - • +
+  I K     : Columns - • +
+ ctrl p   : Print
+ctrl - +  : Zoom - • +
+</code></pre>
+<h2 id="keys-for-a-standings">Keys for A Standings</h2>
+<pre><code># N E P R : sort on Id • Name • Elo • Points • performance Rating
+   J L    : decimals for performance rating - • +
+</code></pre>
+<h2 id="keys-for-b-tables">Keys for B Tables</h2>
+<pre><code>  ↑ ↓     : Table - • +
+  0 1     : White 0 • 1
+ Space    : ½
+  Del     : Delete
+</code></pre>
+<h2 id="parameters">Parameters</h2>
+<pre><code>TITLE = Name of tournament
+ROUNDS = Number of rounds (n = number of players)
+  • n is odd  =&gt; n     gives Berger otherwise FairPair
+  • n is even =&gt; n - 1 gives Berger otherwise FairPair
+P = Number of players (default all)
+
+GAMES = Number of games per round
+	• 1 =&gt; single round (default)
+	• 2 =&gt; double round
+
+SORT = Sort the players using elo rating
+	• 0 =&gt; no sort
+	• 1 =&gt; sort (default)
+
+BALANCE = colour balance
+	• 0 =&gt; no balance
+	• 1 =&gt; balance (default)
+
+A = Number of Columns for A (default 1)
+B = Number of Columns for B (default 1)
+C = Number of Columns for C (default 1)
+
+1653 Christer Nilsson: elo + name. Use 1400 if elo is missing
+</code></pre>
+<p><strong>Number of Columns</strong> is used together with <strong>Zoom</strong>, optimizing screen and printer layout.</p>
+<h2 id="backup">Backup</h2>
+<p>Copy the url and save it in a secure place, e.g. a USB stick or mail.<br>
+The url is also available in the <strong>history</strong> of your browser.</p>
+<h2 id="limitations">Limitations</h2>
+<p>The program is best experienced on computers <strong>with a keyboard</strong>. (PC, Mac, Linux)<br>
+But, phones and pads can be also be used.</p>
+
+            
+            
+        </body>
+        </html>
