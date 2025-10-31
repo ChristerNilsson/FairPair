@@ -63,12 +63,11 @@ addBord = (bord,res,c0,c1) ->
 	tr
 
 calcTime = ->
-	base = parseInt settings.BASE
-	incr = parseInt settings.INCR
+	arr = settings.TIME.replace('  ',' ').replace('  ',' ').split ' '
+	base = parseInt arr[0].trim()
+	incr = parseInt arr[1].trim()
 	total = (base + incr) * 2 * settings.ROUNDS * settings.GAMES
-	h = total // 60
-	m = total %% 60
-	"#{h}h#{m}m"
+	"Expected tournament duration: #{total // 60} hours #{total %% 60} minutes"
 
 changeGroupSize = (key,letter) ->
 	if key == 'I' and settings[letter] > 1 then settings[letter]--
@@ -227,8 +226,7 @@ makeURL = ->
 	url += "&GAMES=#{settings.GAMES}"
 	url += "&ROUNDS=#{settings.ROUNDS}"
 	url += "&SORT=#{settings.SORT}"
-	url += "&BASE=#{settings.BASE}"
-	url += "&INCR=#{settings.INCR}"
+	url += "&TIME=#{settings.TIME}"
 	url += "&currSort=#{global.currSort}".replace '#', '%23'
 	url += "&ONE=#{settings.ONE}"
 	url += "&BALANCE=#{settings.BALANCE}"
@@ -272,7 +270,7 @@ parseTextarea = -> # läs in initiala uppgifter om spelarna
 			[key, val] = line.split '='
 			key = key.trim()
 			val = val.trim()
-			if key in "TITLE GAMES ROUNDS BASE INCR SORT ONE BALANCE A B C P".split ' ' then settings[key] = val
+			if key in "TITLE GAMES ROUNDS TIME SORT ONE BALANCE A B C P".split ' ' then settings[key] = val
 		else
 			persons.push line
 
@@ -311,8 +309,7 @@ parseURL = ->
 	settings.TITLE = safeGet params, "TITLE"
 	settings.GAMES = parseInt safeGet params, "GAMES", "1"
 	settings.SORT = parseInt safeGet params, "SORT", "1"
-	settings.BASE = safeGet params, 'BASE', "10"
-	settings.INCR = safeGet params, 'INCR', "5"
+	settings.TIME = safeGet params, 'TIME', "10 + 5"
 	global.currSort = safeGet params, "currSort", "#"
 
 	settings.ONE = parseInt safeGet params, "ONE", "1"
@@ -505,15 +502,7 @@ setScreen = (letter) ->
 	document.getElementById('tables').style.display  = if letter == 'B' then 'flex' else 'none'
 	document.getElementById('names').style.display   = if letter == 'C' then 'flex' else 'none'
 
-showHelp = ->
-	# r = await fetch "help.md"
-	# mdText = await r.text()
-	win = window.open "help.html" #, "_blank"
-	# win.document.write "<html><head><title>Help</title>
-	# 	<link rel='stylesheet' href='style.css'>
-	# 	</head><body>#{marked.parse(mdText)}</body></html>"
-	# win.document.close()
-	# initTextarea()
+showHelp = -> window.open "help.html"
 
 showInfo = (message) -> # Visa helpText på skärmen
 	pre = document.getElementById 'info'
@@ -521,9 +510,14 @@ showInfo = (message) -> # Visa helpText på skärmen
 	pre.innerHTML = message
 
 showMatrix = -> # Visa matrisen Alla mot alla. Dot betyder: inget möte
+
+	for player,i in global.players
+		echo player.getElos global.longs[i]
+
 	SPACING = ' '
 	n = global.players.length
 	if n > ALFABET.length then n = ALFABET.length
+	res = []
 
 	if global.berger 
 		if settings.GAMES == 2 then return
@@ -536,15 +530,17 @@ showMatrix = -> # Visa matrisen Alla mot alla. Dot betyder: inget möte
 				m[i][j] = "#{'123456789abcdefgh'[r]}"
 				m[j][i] = "#{'123456789abcdefgh'[r]}"
 
-		echo '    ' + (ALFABET[i] for i in range n).join SPACING
+		res.push '    ' + (ALFABET[i] for i in range n).join SPACING
 		for i in range n
 			line = m[i].slice 0,n
-			echo ALFABET[i] + '   ' + line.join(SPACING) + '   ' + global.players[i].elo  # + ' ' + Math.round global.players[i].summa
+			res.push ALFABET[i] + '   ' + line.join(SPACING) + '   ' + global.players[i].elo  # + ' ' + Math.round global.players[i].summa
 	else 
-		echo '    ' + (ALFABET[i] for i in range n).join SPACING
+		res.push '    ' + (ALFABET[i] for i in range n).join SPACING
 		for i in range n
 			line = global.fairpair.matrix[i].slice 0,n
-			echo ALFABET[i] + '   ' + line.join(SPACING) + '   ' + global.players[i].elo  # + ' ' + Math.round global.players[i].summa
+			res.push ALFABET[i] + '   ' + line.join(SPACING) + '   ' + global.players[i].elo  # + ' ' + Math.round global.players[i].summa
+
+	echo res.join "\n"
 
 showNames = ->
 	persons = []
@@ -705,7 +701,8 @@ main = -> # Hämta urlen i första hand, textarean i andra hand.
 	updateLongs()
 	setScreen 'A'
 	setCursor global.currRound,global.currTable
-	document.title = calcTime() + ' ' + settings.TITLE
+	document.title = settings.TITLE
+	echo calcTime()
 
 	document.addEventListener 'keydown', (event) -> # Hanterar alla tangenttryckningar
 		return if event.ctrlKey or event.metaKey or event.altKey # förhindrar att ctrl p sorterar på poäng

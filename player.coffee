@@ -17,7 +17,27 @@ export class Player
 			if c == 'b' then b--
 		b
 
-	toString: -> "#{String(@elo).padStart 4, '0'} #{@name}"
+	toString : -> "#{String(@elo).padStart 4, '0'} #{@name}"
+
+	getElos : (long) ->
+		@P = 0
+		@PR = 0
+		@elos = [@elo, ':']
+		for r in range settings.GAMES * settings.ROUNDS
+			ch = long[r][3]
+			value = '012'.indexOf ch
+			opp = long[r][1]
+			if value != -1
+				elo = global.players[opp].elo
+				@P += value/2
+				if elo != 0
+					@PR += value/2
+					@elos.push Math.round elo
+			else
+				@elos.push '    '
+			
+		@elos.push @PR
+		@elos.join ' '
 
 	update_P_and_PR : (longs,i) ->
 		long = longs[i]

@@ -58,6 +58,11 @@ GAMES = Number of games per round
 	• 1 => single round (default)
 	• 2 => double round
 
+TIME = base + increment
+	• 10 + 0
+	• 10 + 5
+	• 90 + 30 (default)
+
 SORT = Sort the players using elo rating
 	• 0 => no sort
 	• 1 => sort (default)
