@@ -502,7 +502,7 @@ setScreen = (letter) ->
 	document.getElementById('tables').style.display  = if letter == 'B' then 'flex' else 'none'
 	document.getElementById('names').style.display   = if letter == 'C' then 'flex' else 'none'
 
-showHelp = -> window.open "help.html"
+showHelp = -> window.open "help.html","_self"
 
 showInfo = (message) -> # Visa helpText på skärmen
 	pre = document.getElementById 'info'
