@@ -24,7 +24,7 @@ export settings =
 	TITLE : 'No Title'
 	GAMES : 1 # antal partier per rond
 	ROUNDS : 0 # antal ronder
-	TIME : "10 5" # minutes
+	# TIME : "10 5" # minutes
 	SORT : 1 # om spelarna initialt ska sorteras på elo
 	ONE : 1 # ONE = 1 # 0=dev 1=prod 
 	BALANCE : 1 # färgbalans

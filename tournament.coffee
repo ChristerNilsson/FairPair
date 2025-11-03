@@ -62,12 +62,12 @@ addBord = (bord,res,c0,c1) ->
 
 	tr
 
-calcTime = ->
-	arr = settings.TIME.replace('  ',' ').replace('  ',' ').split ' '
-	base = parseInt arr[0].trim()
-	incr = parseInt arr[1].trim()
-	total = (base + incr) * 2 * settings.ROUNDS * settings.GAMES
-	"Expected tournament duration: #{total // 60} hours #{total %% 60} minutes"
+# calcTime = ->
+# 	arr = settings.TIME.replace('  ',' ').replace('  ',' ').split ' '
+# 	base = parseInt arr[0].trim()
+# 	incr = parseInt arr[1].trim()
+# 	total = (base + incr) * 2 * settings.ROUNDS * settings.GAMES
+# 	"Expected tournament duration: #{total // 60} hours #{total %% 60} minutes"
 
 changeGroupSize = (key,letter) ->
 	if key == 'I' and settings[letter] > 1 then settings[letter]--
@@ -163,17 +163,17 @@ handleKey = (key) ->
 	if key in ' _' or key in 'Delete 0 1 # N E P R'.split ' '
 		history.replaceState {}, "", makeURL() # för att slippa omladdning av sidan
 
-initTextarea = ->
-	t = document.getElementById 'textarea'
-	lines = t.value.split '\n'
-	offset = 0
-	i = 0
-	while lines[i].length > 0
-		offset += lines[i].length + 1
-		i++
+# initTextarea = ->
+# 	t = document.getElementById 'textarea'
+# 	lines = t.value.split '\n'
+# 	offset = 0
+# 	i = 0
+# 	while lines[i].length > 0
+# 		offset += lines[i].length + 1
+# 		i++
 
-	t.focus()
-	t.setSelectionRange offset + 1, t.value.length
+# 	t.focus()
+# 	t.setSelectionRange offset + 1, t.value.length
 
 koppla = (typ, parent, attrs = {}) ->
 	elem = document.createElement typ
@@ -226,7 +226,7 @@ makeURL = ->
 	url += "&GAMES=#{settings.GAMES}"
 	url += "&ROUNDS=#{settings.ROUNDS}"
 	url += "&SORT=#{settings.SORT}"
-	url += "&TIME=#{settings.TIME}"
+	# url += "&TIME=#{settings.TIME}"
 	url += "&currSort=#{global.currSort}".replace '#', '%23'
 	url += "&ONE=#{settings.ONE}"
 	url += "&BALANCE=#{settings.BALANCE}"
@@ -270,7 +270,7 @@ parseTextarea = -> # läs in initiala uppgifter om spelarna
 			[key, val] = line.split '='
 			key = key.trim()
 			val = val.trim()
-			if key in "TITLE GAMES ROUNDS TIME SORT ONE BALANCE A B C P".split ' ' then settings[key] = val
+			if key in "TITLE GAMES ROUNDS SORT ONE BALANCE A B C P".split ' ' then settings[key] = val
 		else
 			persons.push line
 
@@ -309,7 +309,7 @@ parseURL = ->
 	settings.TITLE = safeGet params, "TITLE"
 	settings.GAMES = parseInt safeGet params, "GAMES", "1"
 	settings.SORT = parseInt safeGet params, "SORT", "1"
-	settings.TIME = safeGet params, 'TIME', "10 + 5"
+	# settings.TIME = safeGet params, 'TIME', "10 + 5"
 	global.currSort = safeGet params, "currSort", "#"
 
 	settings.ONE = parseInt safeGet params, "ONE", "1"
@@ -666,7 +666,7 @@ main = -> # Hämta urlen i första hand, textarean i andra hand.
 	params = new URLSearchParams window.location.search
 
 	if params.size == 0 
-		initTextarea()
+		# initTextarea()
 		document.getElementById("help").addEventListener "click", showHelp
 		document.getElementById("continue").addEventListener "click", parseTextarea
 		return
@@ -702,7 +702,7 @@ main = -> # Hämta urlen i första hand, textarean i andra hand.
 	setScreen 'A'
 	setCursor global.currRound,global.currTable
 	document.title = settings.TITLE
-	echo calcTime()
+	# echo calcTime()
 
 	document.addEventListener 'keydown', (event) -> # Hanterar alla tangenttryckningar
 		return if event.ctrlKey or event.metaKey or event.altKey # förhindrar att ctrl p sorterar på poäng
